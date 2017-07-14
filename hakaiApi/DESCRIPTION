@@ -1,0 +1,10 @@
+Package: hakaiApi
+Title: Create an authenticated HTTP request client for the Hakai API
+Version: 0.0.1
+Authors@R: person("Taylor", "Denouden", email = "taylor.denouden@hakai.org", role = c("aut", "cre"))
+Description: Initalizes a class that obtains API credentials and provides a method to use those credentials to make GET requests to the Hakai API server.
+Depends: R (>= 3.3.3)
+License: MIT
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1.9000
