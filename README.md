@@ -10,7 +10,7 @@ Before using this library, install it into your environment using the following 
 install.packages('devtools')
 library('devtools')
 
-devtools::install_github("HakaiInstitute/hakai-api-client-r", subdir='hakaiApi', force=TRUE)
+devtools::install_github("HakaiInstitute/hakai-api-client-r", subdir='hakaiApi')
 ```
 
 ## Quickstart
