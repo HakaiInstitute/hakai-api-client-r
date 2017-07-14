@@ -1,7 +1,7 @@
 install.packages('devtools')
 library('devtools')
 
-devtools::install_github("HakaiInstitute/hakai-api-client-r", subdir='hakaiApi')
+devtools::install_github("HakaiInstitute/hakai-api-client-r", subdir='hakaiApi', force=TRUE)
 library('hakaiApi')
 
 # Initialize the client
