@@ -1,8 +1,8 @@
-install.packages('devtools')
-library('devtools')
+install.packages("devtools", repos = "http://cran.us.r-project.org")
+library("devtools")
 
-devtools::install_github("HakaiInstitute/hakai-api-client-r", subdir='hakaiApi', force=TRUE)
-library('hakaiApi')
+devtools::install_github("HakaiInstitute/hakai-api-client-r", subdir = "hakaiApi")
+library("hakaiApi")
 
 # Initialize the client
 client <- hakaiApi::Client$new()
