@@ -29,7 +29,7 @@ data <- client$get(endpoint)
 print(data)
 ```
 
-This script is also available at [./example.R]('example.R')
+This script is also available at [./example.R](example.R)
 
 ## Methods
 
