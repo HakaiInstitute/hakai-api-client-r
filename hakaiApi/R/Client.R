@@ -32,7 +32,7 @@ Client <- R6Class("Client",
     get = function(endpointUrl) {
       token = sprintf("%s %s", self$credentials$token_type, self$credentials$access_token)
       r <- httr::GET(endpointUrl, httr::add_headers(Authorization = token))
-      return(httr:content(r))
+      return(httr::content(r))
     },
     remove_old_credentials = function() {
       if(file.exists(private$credentials_file)) {
