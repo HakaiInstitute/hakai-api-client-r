@@ -9,6 +9,10 @@ Before using this library, install it into your environment using the following 
 ```r
 install.packages('devtools')
 library('devtools')
+install.packages('urltools')
+library('urltools')
+install.packages('httr')
+library('httr')
 
 devtools::install_github("HakaiInstitute/hakai-api-client-r", subdir='hakaiApi')
 ```
