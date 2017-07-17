@@ -1,6 +1,12 @@
-install.packages("devtools", repos = "http://cran.us.r-project.org")
-library("devtools")
+# install dependant packages
+install.packages('devtools', repos = 'http://cran.us.r-project.org')
+library('devtools')
+install.packages('urltools', repos = 'http://cran.us.r-project.org')
+library('urltools')
+install.packages('httr', repos = 'http://cran.us.r-project.org')
+library('httr')
 
+# install hakaiApi library
 devtools::install_github("HakaiInstitute/hakai-api-client-r", subdir = "hakaiApi")
 library("hakaiApi")
 
