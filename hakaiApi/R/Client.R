@@ -73,21 +73,27 @@ Client <- R6Class("Client",
         return(FALSE)
       }
 
-      # Load the credentials from the file cache
-      credentials_file <- file(private$credentials_file, "r")
-      cache = unserialize(credentials_file)
-      close(credentials_file)
-      api_root = cache$api_root
-      credentials = cache$credentials
+      tryCatch({
+        # Load the credentials from the file cache
+        credentials_file <- file(private$credentials_file, "r")
+        cache = unserialize(credentials_file)
+        close(credentials_file)
+        api_root = cache$api_root
+        credentials = cache$credentials
 
-      # Check api root is the same and that credentials aren't expired
-      same_root = self$api_root == api_root
-      credentials_expired = as.numeric(Sys.time()) > credentials$expires_at
+        # Check api root is the same and that credentials aren't expired
+        same_root = self$api_root == api_root
+        credentials_expired = as.numeric(Sys.time()) > credentials$expires_at
 
-      if(!same_root || credentials_expired){
+        if(!same_root || credentials_expired){
+          file.remove(private$credentials_file)
+          return(FALSE)
+        }
+      }, error = function(e) {
+        # Remove file anyway if there's an error
         file.remove(private$credentials_file)
         return(FALSE)
-      }
+      })
 
       # If all is well, return the credentials
       return(credentials)
