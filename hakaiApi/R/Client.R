@@ -53,6 +53,7 @@ Client <- R6Class("Client",
       })
       data <- do.call("rbind", data)
       data <- as_tibble(data)
+      return(data)
     },
     get_credentials_from_web = function() {
       # Get the user to login and get the oAuth2 code from the redirect url
