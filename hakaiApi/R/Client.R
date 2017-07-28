@@ -1,7 +1,7 @@
 library(R6)
 library("httr")
 library("urltools")
-library(tidyverse) # Will have to install.package(tidyverse) in quickstart instructions.
+library(tidyverse)
 
 #' A Hakai API Client
 #'

@@ -8,6 +8,8 @@ Before using this library, install it into your environment using the following 
 
 ```r
 install.packages('devtools')
+install.packages('tidyverse')
+library('tidyverse')
 library('devtools')
 
 devtools::install_github("HakaiInstitute/hakai-api-client-r", subdir='hakaiApi')
@@ -18,7 +20,7 @@ devtools::install_github("HakaiInstitute/hakai-api-client-r", subdir='hakaiApi')
 ```r
 library('hakaiApi')
 
-# Get the api request client
+# Get the api request client, run this line independently before the rest of the code
 client <- hakaiApi::Client$new() # Follow stdout prompts to get an API token
 
 # Make a data request for chlorophyll data
