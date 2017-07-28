@@ -1,6 +1,7 @@
 library(R6)
 library("httr")
 library("urltools")
+library(tidyverse) # Will have to install.package(tidyverse) in quickstart instructions.
 
 #' A Hakai API Client
 #'
@@ -33,6 +34,9 @@ Client <- R6Class("Client",
       token = sprintf("%s %s", self$credentials$token_type, self$credentials$access_token)
       r <- httr::GET(endpointUrl, httr::add_headers(Authorization = token))
       data <- private$json2tbl(httr::content(r))
+      data <- as_tibble(data)
+      write_csv(data, "/tmp/temp_data.csv")
+      data <- read_csv("/tmp/temp_data.csv")
       return(data)
     },
     remove_old_credentials = function() {
@@ -52,7 +56,6 @@ Client <- R6Class("Client",
         unlist(data)
       })
       data <- do.call("rbind", data)
-      data <- as_tibble(data)
       return(data)
     },
     get_credentials_from_web = function() {
