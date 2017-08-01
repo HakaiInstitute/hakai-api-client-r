@@ -1,6 +1,7 @@
 library(R6)
 library("httr")
 library("urltools")
+library(tidyverse)
 
 #' A Hakai API Client
 #'
@@ -32,7 +33,11 @@ Client <- R6Class("Client",
     get = function(endpointUrl) {
       token = sprintf("%s %s", self$credentials$token_type, self$credentials$access_token)
       r <- httr::GET(endpointUrl, httr::add_headers(Authorization = token))
-      return(httr::content(r))
+      data <- private$json2tbl(httr::content(r))
+      data <- as_tibble(data)
+      write_csv(data, "/tmp/temp_data.csv")
+      data <- read_csv("/tmp/temp_data.csv")
+      return(data)
     },
     remove_old_credentials = function() {
       if(file.exists(private$credentials_file)) {
@@ -45,6 +50,14 @@ Client <- R6Class("Client",
     authorization_base_url = NULL,
     token_url = NULL,
     credentials_file = path.expand('~/.hakai-api-credentials-r'),
+    json2tbl = function(data) {
+      data <- lapply(data, function(data) {
+        data[sapply(data, is.null)] <- NA
+        unlist(data)
+      })
+      data <- do.call("rbind", data)
+      return(data)
+    },
     get_credentials_from_web = function() {
       # Get the user to login and get the oAuth2 code from the redirect url
       writeLines("Please go here and authorize:")
