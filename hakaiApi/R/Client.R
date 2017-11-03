@@ -35,8 +35,7 @@ Client <- R6Class("Client",
       r <- httr::GET(endpointUrl, httr::add_headers(Authorization = token))
       data <- private$json2tbl(httr::content(r))
       data <- as_tibble(data)
-      write_csv(data, "/tmp/temp_data.csv")
-      data <- read_csv("/tmp/temp_data.csv")
+      data <- type_convert(data)
       return(data)
     },
     remove_old_credentials = function() {
