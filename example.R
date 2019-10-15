@@ -1,7 +1,5 @@
 # install dependant packages
-install.packages('tidyverse')
 install.packages('devtools', repos = 'http://cran.us.r-project.org')
-library('tidyverse')
 library('devtools')
 
 # install hakaiApi library

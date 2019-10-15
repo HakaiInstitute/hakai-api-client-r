@@ -1,7 +1,6 @@
 library(R6)
 library("httr")
 library("urltools")
-library(tidyverse)
 
 #' A Hakai API Client
 #'

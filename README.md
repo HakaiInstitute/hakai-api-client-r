@@ -8,8 +8,6 @@ Before using this library, install it into your environment using the following 
 
 ```r
 install.packages('devtools')
-install.packages('tidyverse')
-library('tidyverse')
 library('devtools')
 
 devtools::install_github("HakaiInstitute/hakai-api-client-r", subdir='hakaiApi')
