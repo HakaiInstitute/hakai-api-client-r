@@ -1,6 +1,7 @@
 library(R6)
 library("httr")
 library("urltools")
+library("readr")
 
 #' A Hakai API Client
 #'
