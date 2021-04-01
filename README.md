@@ -41,7 +41,7 @@ If for some reason your credentials become corrupted and stop working, there is 
 
 ## API endpoints
 
-For details about the API, including available endpoints where data can be requested, see the [Hakai API documentation](https://github.com/HakaiInstitute/hakai-api).
+For details about the API, including available endpoints where data can be requested, see the [Hakai API documentation](https://hakaiinstitute.github.io/hakai-api/).
 
 ## Advanced usage
 
