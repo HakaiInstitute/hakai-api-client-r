@@ -16,10 +16,12 @@ Client$new()
 \item \href{#method-new}{\code{Client$new()}}
 \item \href{#method-get}{\code{Client$get()}}
 \item \href{#method-remove_old_credentials}{\code{Client$remove_old_credentials()}}
+\item \href{#method-clone}{\code{Client$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Client$new(api_root = "https://hecate.hakai.org/api")}\if{html}{\out{</div>}}
@@ -35,6 +37,7 @@ Client$new()
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get"></a>}}
+\if{latex}{\out{\hypertarget{method-get}{}}}
 \subsection{Method \code{get()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Client$get(endpointUrl)}\if{html}{\out{</div>}}
@@ -43,10 +46,28 @@ Client$new()
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-remove_old_credentials"></a>}}
+\if{latex}{\out{\hypertarget{method-remove_old_credentials}{}}}
 \subsection{Method \code{remove_old_credentials()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Client$remove_old_credentials()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Client$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
 }
 }
