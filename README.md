@@ -16,17 +16,16 @@ devtools::install_github("HakaiInstitute/hakai-api-client-r", subdir='hakaiApi')
 ## Quickstart
 
 ```r
-library('hakaiApi')
 
-# Get the api request client, run this line independently before the rest of the code
-client <- hakaiApi::Client$new() # Follow stdout prompts to get an API token
+# Initialize the client
+client <- hakaiApi::Client$new()
 
-# Make a data request for chlorophyll data
-endpoint = sprintf("%s/%s", client$api_root, "eims/views/output/chlorophyll?limit=50")
-data <- client$get(endpoint)
+# Request some data (request chlorophyll data here)
+data <- client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?limit=50")
 
-# Print out the data
-print(data)
+# View out the data
+View(data)
+
 ```
 
 This script is also available at [./example.R](example.R)
