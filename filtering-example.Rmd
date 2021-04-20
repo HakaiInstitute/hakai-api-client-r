@@ -27,7 +27,7 @@ client <- hakaiApi::Client$new() # follow link in console and paste auth. code i
 
 
 
-```{r}
+```{r filter}
 # First return some chl data with no filters
 all_chl <- client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll") # by default only 20 rows are returned
 str(all_chl) # Look at what columns are available to filter on
@@ -49,8 +49,18 @@ client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?site_id=Q
 
 # This looks good so now you can assign the result to  a table and remove the limit
 
-a_great_chl_query <- client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?site_id=QU39&chla_flag=AV&date>2016-01-01&filter_type=GF/F&line_out_depth=0&fields=date,chla,&limit=-1")
+a_great_chl_query <- client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?site_id=QU39&chla_flag=AV&date>2016-01-01&filter_type=GF/F&line_out_depth=0&fields=date,chla&limit=-1")
 
 plot(a_great_chl_query$date, a_great_chl_query$chla)
 ```
 
+Let's say you're only interested in rerceiving the highest 10 values for chlorophyll from all of the chlorphyll data in the portal. We can do that with the API as well using the sort descending capability and limiting the return to only 10 values.
+
+
+```{r sort}
+top_10_chl <- client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?fields=date,chla,site_id,line_out_depth&chla>0&sort=-chla&limit=10") #note  you have to add chla>0 to remove NAs
+
+```
+
+
+For more great querying capabilities see: https://hakaiinstitute.github.io/hakai-api/querying-data.html
