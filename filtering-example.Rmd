@@ -1,0 +1,56 @@
+---
+title: "hakaiApi Filtering"
+author: "Brett Johnson"
+date: "19/04/2021"
+output: html_document
+---
+
+# Filtering data with the API
+
+Here's a simple demonstration of how to filter data from the API. The API has limits in terms of how much data you can download in one query. So, instead of querying for all data of a certain type, it's good to narrow it down to the time period, sites, or parameters that you are really interested in. Though the API has many options for querying, filtering, and sorting data, most R users will be more comfortable filtering data using R packages such as dplyr.
+
+A good way to build a query is in steps. Let's say we want all the chlorophyll data from QU39, from after 2016, with only accepted values, and only glass fibre filters (GF/F) from the surface.
+
+```{r setup, include=FALSE}
+
+# # install dependant packages
+# install.packages('devtools')
+# library('devtools')
+# 
+# # install hakaiApi library
+# devtools::install_github("HakaiInstitute/hakai-api-client-r", subdir = "hakaiApi")
+
+library(hakaiApi) 
+# Initialize the client
+client <- hakaiApi::Client$new() # follow link in console and paste auth. code in console (ignore alignment issue)
+```
+
+
+
+```{r}
+# First return some chl data with no filters
+all_chl <- client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll") # by default only 20 rows are returned
+str(all_chl) # Look at what columns are available to filter on
+
+# Narrow it down to QU39
+client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?site_id=QU39")
+
+#Get back only accepted values 
+client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?site_id=QU39&chla_flag=AV")
+
+# Remove values before 2016
+client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?site_id=QU39&chla_flag=AV&date>2016-01-01")
+
+# Include only GF/F from the surface
+client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?site_id=QU39&chla_flag=AV&date>2016-01-01&filter_type=GF/F&line_out_depth=0")
+
+# Select only the columns I'm interested in
+client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?site_id=QU39&chla_flag=AV&date>2016-01-01&filter_type=GF/F&line_out_depth=0&fields=date,chla,lab_technician")
+
+# This looks good so now you can assign the result to  a table and remove the limit
+
+a_great_chl_query <- client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?site_id=QU39&chla_flag=AV&date>2016-01-01&filter_type=GF/F&line_out_depth=0&fields=date,chla,&limit=-1")
+
+plot(a_great_chl_query$date, a_great_chl_query$chla)
+```
+
