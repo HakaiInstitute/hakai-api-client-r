@@ -1,5 +1,5 @@
 # install dependant packages
-install.packages('devtools', repos = 'http://cran.us.r-project.org')
+install.packages('devtools')
 library('devtools')
 
 # install hakaiApi library
@@ -10,8 +10,7 @@ library("hakaiApi")
 client <- hakaiApi::Client$new()
 
 # Request some data (request chlorophyll data here)
-endpoint <- "eims/views/output/chlorophyll?limit=50"
-data <- client$get(sprintf("%s/%s", client$api_root, endpoint))
+data <- client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?limit=50")
 
-# Print out the data
-print(data)
+# View out the data
+View(data)
