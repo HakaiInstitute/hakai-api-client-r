@@ -18,43 +18,85 @@ knitr::opts_chunk$set(
 library(hakaiApi)
 
 # Initialize the client
-client <- hakaiApi::Client$new() # follow link in console and paste auth. code in console (ignore alignment issue)
+#   follow link in console and paste auth. code in console
+#   (ignore alignment issue)
+client <- hakaiApi::Client$new()
 ```
 # Filtering data with the API
 
-Here's a simple demonstration of how to filter data from the API. The API has limits in terms of how much data you can download in one query. So, instead of querying for all data of a certain type, it's good to narrow it down to the time period, sites, or parameters that you are really interested in. Though the API has many options for querying, filtering, and sorting data, most R users will be more comfortable filtering data using R packages such as dplyr.
+Here's a simple demonstration of how to filter data from the API. The API has
+limits in terms of how much data you can download in one query. So, instead of
+querying for all data of a certain type, it's good to narrow it down to the time
+period, sites, or parameters that you are really interested in. Though the API
+has many options for querying, filtering, and sorting data, most R users will be
+more comfortable filtering data using R packages such as dplyr.
 
-A good way to build a query is in steps. Let's say we want all the chlorophyll data from QU39, from after 2016, with only accepted values, and only glass fibre filters (GF/F) from the surface.
-```{r filter}
+A good way to build a query is in steps. Let's say we want all the chlorophyll
+data from QU39, from after 2016, with only accepted values, and only glass fibre
+filters (GF/F) from the surface.
+```{r filter, eval = FALSE}
 # First return some chl data with no filters
-all_chl <- client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll") # by default only 20 rows are returned
+endpoint <- "/eims/views/output/chlorophyll"
+all_chl <- client$get(paste0(client$api_root, endpoint))
+# by default only 20 rows are returned
 str(all_chl) # Look at what columns are available to filter on
 
 # Narrow it down to QU39
-client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?site_id=QU39")
+query <- "?site_id=QU39"
+client$get(paste0(client$api_root, endpoint, query))
 
 #Get back only accepted values
-client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?site_id=QU39&chla_flag=AV")
+query <- "?site_id=QU39&chla_flag=AV"
+client$get(paste0(client$api_root, endpoint, query))
 
 # Remove values before 2016
-client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?site_id=QU39&chla_flag=AV&date>2016-01-01")
+query <- "?site_id=QU39&chla_flag=AV&date.year>2016"
+client$get(paste0(client$api_root, endpoint, query))
 
 # Include only GF/F from the surface
-client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?site_id=QU39&chla_flag=AV&date>2016-01-01&filter_type=GF/F&line_out_depth=0")
+# It may be useful to split up the queries and rejoin them over multiple lines
+# Using the paste() or paste0() functions
+query <- paste("site_id=QU39",
+               "chla_flag=AV",
+               "date.year>2016",
+               "filter_type=GF/F",
+               "line_out_depth=0", sep = "&")
+client$get(paste0(client$api_root, endpoint, "?", query))
 
 # Select only the columns I'm interested in
-client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?site_id=QU39&chla_flag=AV&date>2016-01-01&filter_type=GF/F&line_out_depth=0&fields=date,chla,lab_technician")
+query <- paste("site_id=QU39",
+               "chla_flag=AV",
+               "date.year>2016",
+               "filter_type=GF/F",
+               "line_out_depth=0",
+               "fields=date,chla,lab_technician", sep = "&")
+client$get(paste0(client$api_root, endpoint, "?", query))
 
-# This looks good so now you can assign the result to  a table and remove the limit
+# This looks good so now you can assign a variable and remove the limit
+query <- paste("site_id=QU39",
+               "chla_flag=AV",
+               "date.year>2016",
+               "filter_type=GF/F",
+               "line_out_depth=0",
+               "fields=date,chla,lab_technician",
+               "limit=-1", sep = "&")
+a_great_chl_query <- client$get(paste0(client$api_root, endpoint, "?", query))
 
-a_great_chl_query <- client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?site_id=QU39&chla_flag=AV&date>2016-01-01&filter_type=GF/F&line_out_depth=0&fields=date,chla&limit=-1")
-
-# plot(a_great_chl_query$date, a_great_chl_query$chla, xlim = "2021-01-01")
+plot(a_great_chl_query$date,
+     a_great_chl_query$chla,
+     xlim = as.Date(c("2017-01-01", "2020-01-01")),
+     ylim = c(0, 5))
 ```
-Let's say you're only interested in receiving the highest 10 values for chlorophyll from all the chlorophyll data in the portal. We can do that with the API as well using the sort descending capability and limiting the return to only 10 values.
-```{r sort}
-top_10_chl <- client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?fields=date,chla,site_id,line_out_depth&chla>0&sort=-chla&limit=10") #note  you have to add chla>0 to remove NAs
-
+Let's say you're only interested in receiving the highest 10 values for
+chlorophyll from all the chlorophyll data in the portal. We can do that with the
+API as well using the sort descending capability and limiting the return to only
+10 values.
+```{r sort, eval = FALSE}
+endpoint <- "/eims/views/output/chlorophyll"
+query <- paste("fields=date,chla,site_id,line_out_depth",
+               "chla>0",  # Note: added chla>0 to remove NA values
+               "sort=-chla",
+               "limit=10", sep = "&")
+top_10_chl <- client$get(paste0(client$api_root, endpoint, "?", query))
 ```
 For more great querying capabilities see [the querying-data docs](https://hakaiinstitute.github.io/hakai-api/querying-data.html)
-
