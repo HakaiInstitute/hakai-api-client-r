@@ -3,11 +3,12 @@ library("httr")
 library("urltools")
 library("readr")
 
-#' A Hakai API Client
+#' The Hakai API Client Class
 #'
-#' This class allows you to make authenticated API requests for Hakai data
+#' @description
+#' Class to use to make authenticated API requests for Hakai data
 #' @export
-Client <- R6Class("Client",
+Client <- R6::R6Class("Client",
   lock_objects = FALSE,
   public = list(
     #' @field api_root The api_root you are logged in to

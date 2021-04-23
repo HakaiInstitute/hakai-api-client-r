@@ -2,14 +2,9 @@
 % Please edit documentation in R/Client.R
 \name{Client}
 \alias{Client}
-\title{A Hakai API Client}
+\title{The Hakai API Client Class}
 \description{
-A Hakai API Client
-
-A Hakai API Client
-}
-\details{
-This class allows you to make authenticated API requests for Hakai data
+Class to use to make authenticated API requests for Hakai data
 }
 \examples{
 
