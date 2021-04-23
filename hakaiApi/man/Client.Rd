@@ -54,7 +54,8 @@ Log into Google to gain credential access to the API
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{api_root}}{Optional API base url to fetch data. Defaults to "https://hecate.hakai.org/api"}
+\item{\code{api_root}}{Optional API base url to fetch data.
+Defaults to "https://hecate.hakai.org/api"}
 }
 \if{html}{\out{</div>}}
 }

@@ -10,17 +10,18 @@ Client <- R6::R6Class("Client",
     api_root = NULL,
     #' @description
     #' Log into Google to gain credential access to the API
-    #' @param api_root Optional API base url to fetch data. Defaults to "https://hecate.hakai.org/api"
+    #' @param api_root Optional API base url to fetch data.
+    #' Defaults to "https://hecate.hakai.org/api"
     #' @return A client instance
     #' @examples
     #' client <- Client$new()
     initialize = function(api_root = "https://hecate.hakai.org/api") {
       self$api_root <- api_root
-      private$authorization_base_url <- sprintf('%s/auth/oauth2', api_root)
-      private$token_url <- sprintf('%s/auth/oauth2/token', api_root)
+      private$authorization_base_url <- paste0(api_root, '/auth/oauth2')
+      private$token_url <- paste0(api_root, '/auth/oauth2/token')
 
       credentials <- private$try_to_load_credentials()
-      if(is.list(credentials)) {
+      if (is.list(credentials)) {
         private$credentials <- credentials
       } else {
         credentials <- private$get_credentials_from_web()
@@ -35,7 +36,8 @@ Client <- R6::R6Class("Client",
     #' @examples
     #' client$get("https://hecate.hakai.org/api/aco/views/projects")
     get = function(endpointUrl) {
-      token <- sprintf("%s %s", private$credentials$token_type, private$credentials$access_token)
+      token <- paste(private$credentials$token_type,
+                     private$credentials$access_token)
       r <- httr::GET(endpointUrl, httr::add_headers(Authorization = token))
       data <- private$json2tbl(httr::content(r))
       data <- tibble::as_tibble(data)
@@ -47,13 +49,14 @@ Client <- R6::R6Class("Client",
     #' @examples
     #' client$remove_credentials()
     remove_credentials = function() {
-      if(file.exists(private$credentials_file)) {
+      if (file.exists(private$credentials_file)) {
         file.remove(private$credentials_file)
       }
     }
   ),
   private = list(
-    client_id = '289782143400-1f4r7l823cqg8fthd31ch4ug0thpejme.apps.googleusercontent.com',
+    client_id = paste('289782143400-1f4r7l823cqg8fthd31ch4ug0thpejme',
+                      '.apps.googleusercontent.com'),
     authorization_base_url = NULL,
     token_url = NULL,
     credentials_file = path.expand('~/.hakai-api-credentials-r'),
@@ -74,7 +77,9 @@ Client <- R6::R6Class("Client",
       code <- urltools::param_get(redirect_response, "code")$code
 
       # Exchange the oAuth2 code for a jwt token
-      res <- httr::POST(private$token_url, body = list(code = code), encode = "json")
+      res <- httr::POST(private$token_url,
+                        body = list(code = code),
+                        encode = "json")
       res_body <- httr::content(res, "parsed")
 
       now <- as.numeric(Sys.time())
@@ -90,7 +95,7 @@ Client <- R6::R6Class("Client",
     },
     try_to_load_credentials = function() {
       # Check the cached credentials file exists
-      if(!file.exists(private$credentials_file)){
+      if (!file.exists(private$credentials_file)) {
         return(FALSE)
       }
 
@@ -106,7 +111,7 @@ Client <- R6::R6Class("Client",
         same_root <- self$api_root == api_root
         credentials_expired <- as.numeric(Sys.time()) > credentials$expires_at
 
-        if(!same_root || credentials_expired){
+        if (!same_root || credentials_expired) {
           file.remove(private$credentials_file)
           return(FALSE)
         }
