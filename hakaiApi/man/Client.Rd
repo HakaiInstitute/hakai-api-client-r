@@ -4,18 +4,46 @@
 \alias{Client}
 \title{A Hakai API Client}
 \description{
-This class allows you to make authenticated API requests
+A Hakai API Client
+
+A Hakai API Client
+}
+\details{
+This class allows you to make authenticated API requests for Hakai data
 }
 \examples{
-Client$new()
+
+## ------------------------------------------------
+## Method `Client$new`
+## ------------------------------------------------
+
+client <- Client$new()
+
+## ------------------------------------------------
+## Method `Client$get`
+## ------------------------------------------------
+
+client$get("https://hecate.hakai.org/api/aco/views/projects")
+
+## ------------------------------------------------
+## Method `Client$remove_credentials`
+## ------------------------------------------------
+
+client$remove_credentials()
 }
-\keyword{hakai}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{api_root}}{The api_root you are logged in to}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{Client$new()}}
 \item \href{#method-get}{\code{Client$get()}}
-\item \href{#method-remove_old_credentials}{\code{Client$remove_old_credentials()}}
+\item \href{#method-remove_credentials}{\code{Client$remove_credentials()}}
 \item \href{#method-clone}{\code{Client$clone()}}
 }
 }
@@ -23,6 +51,7 @@ Client$new()
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+Log into Google to gain credential access to the API
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Client$new(api_root = "https://hecate.hakai.org/api")}\if{html}{\out{</div>}}
 }
@@ -30,26 +59,65 @@ Client$new()
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{api_root}}{The root url for all API Requests. Defaults to https://hecate.hakai.org/api}
+\item{\code{api_root}}{Optional API base url to fetch data. Defaults to "https://hecate.hakai.org/api"}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+A client instance
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{client <- Client$new()
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get"></a>}}
 \if{latex}{\out{\hypertarget{method-get}{}}}
 \subsection{Method \code{get()}}{
+Send a GET request to the API
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Client$get(endpointUrl)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{endpointUrl}}{The full API url to fetch data from}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A dataframe of the requested data
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{client$get("https://hecate.hakai.org/api/aco/views/projects")
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-remove_old_credentials"></a>}}
-\if{latex}{\out{\hypertarget{method-remove_old_credentials}{}}}
-\subsection{Method \code{remove_old_credentials()}}{
+\if{html}{\out{<a id="method-remove_credentials"></a>}}
+\if{latex}{\out{\hypertarget{method-remove_credentials}{}}}
+\subsection{Method \code{remove_credentials()}}{
+Remove your cached login credentials to logout of the client
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Client$remove_old_credentials()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Client$remove_credentials()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{client$remove_credentials()
+}
+\if{html}{\out{</div>}}
+
 }
 
 }

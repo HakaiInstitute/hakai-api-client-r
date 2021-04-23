@@ -5,17 +5,19 @@ library("readr")
 
 #' A Hakai API Client
 #'
-#' This class allows you to make authenticated API requests
-#' @param api_root The root url for all API Requests. Defaults to https://hecate.hakai.org/api
-#' @keywords hakai
+#' This class allows you to make authenticated API requests for Hakai data
 #' @export
-#' @examples
-#' Client$new()
 Client <- R6Class("Client",
   lock_objects = FALSE,
   public = list(
+    #' @field api_root The api_root you are logged in to
     api_root = NULL,
-    credentials = NULL,
+    #' @description
+    #' Log into Google to gain credential access to the API
+    #' @param api_root Optional API base url to fetch data. Defaults to "https://hecate.hakai.org/api"
+    #' @return A client instance
+    #' @examples
+    #' client <- Client$new()
     initialize = function(api_root = "https://hecate.hakai.org/api") {
       self$api_root <- api_root
       private$authorization_base_url <- sprintf('%s/auth/oauth2', api_root)
@@ -23,22 +25,32 @@ Client <- R6Class("Client",
 
       credentials <- private$try_to_load_credentials()
       if(is.list(credentials)) {
-        self$credentials = credentials
+        private$credentials <- credentials
       } else {
-        credentials = private$get_credentials_from_web()
+        credentials <- private$get_credentials_from_web()
         private$save_credentials(credentials)
-        self$credentials = credentials
+        private$credentials <- credentials
       }
     },
+    #'@description
+    #' Send a GET request to the API
+    #' @param endpointUrl The full API url to fetch data from
+    #' @return A dataframe of the requested data
+    #' @examples
+    #' client$get("https://hecate.hakai.org/api/aco/views/projects")
     get = function(endpointUrl) {
-      token = sprintf("%s %s", self$credentials$token_type, self$credentials$access_token)
+      token <- sprintf("%s %s", private$credentials$token_type, private$credentials$access_token)
       r <- httr::GET(endpointUrl, httr::add_headers(Authorization = token))
       data <- private$json2tbl(httr::content(r))
       data <- tibble::as_tibble(data)
       data <- readr::type_convert(data)
       return(data)
     },
-    remove_old_credentials = function() {
+    #' @description
+    #' Remove your cached login credentials to logout of the client
+    #' @examples
+    #' client$remove_credentials()
+    remove_credentials = function() {
       if(file.exists(private$credentials_file)) {
         file.remove(private$credentials_file)
       }
@@ -49,6 +61,7 @@ Client <- R6Class("Client",
     authorization_base_url = NULL,
     token_url = NULL,
     credentials_file = path.expand('~/.hakai-api-credentials-r'),
+    credentials = NULL,
     json2tbl = function(data) {
       data <- lapply(data, function(data) {
         data[sapply(data, is.null)] <- NA
@@ -69,7 +82,7 @@ Client <- R6Class("Client",
       res_body <- httr::content(res, "parsed")
 
       now <- as.numeric(Sys.time())
-      credentials = list(
+      credentials <- list(
         access_token = res_body$access_token,
         token_type = res_body$token_type,
         expires_in = res_body$expires_in,
@@ -88,14 +101,14 @@ Client <- R6Class("Client",
       tryCatch({
         # Load the credentials from the file cache
         credentials_file <- file(private$credentials_file, "r")
-        cache = unserialize(credentials_file)
+        cache <- unserialize(credentials_file)
         close(credentials_file)
-        api_root = cache$api_root
-        credentials = cache$credentials
+        api_root <- cache$api_root
+        credentials <- cache$credentials
 
         # Check api root is the same and that credentials aren't expired
-        same_root = self$api_root == api_root
-        credentials_expired = as.numeric(Sys.time()) > credentials$expires_at
+        same_root <- self$api_root == api_root
+        credentials_expired <- as.numeric(Sys.time()) > credentials$expires_at
 
         if(!same_root || credentials_expired){
           file.remove(private$credentials_file)
@@ -112,11 +125,11 @@ Client <- R6Class("Client",
     },
     save_credentials = function(credentials) {
       # Save the credentials to the self$credentials_file location
-      cache = list(
+      cache <- list(
         api_root = self$api_root,
         credentials = credentials
       )
-      credentials_file = file(private$credentials_file, "w")
+      credentials_file <- file(private$credentials_file, "w")
       serialize(cache, credentials_file)
       close(credentials_file)
     }
