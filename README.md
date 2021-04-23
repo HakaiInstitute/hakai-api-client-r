@@ -7,16 +7,13 @@ This project exports a single R6 class for the R programming language that can b
 Before using this library, install it into your environment using the following in your R script:
 
 ```r
-install.packages('devtools')
-library('devtools')
-
-devtools::install_github("HakaiInstitute/hakai-api-client-r", subdir='hakaiApi')
+install.packages("remotes")
+remotes::install_github("HakaiInstitute/hakai-api-client-r", subdir='hakaiApi')
 ```
 
 ## Quickstart
 
 ```r
-
 # Initialize the client
 client <- hakaiApi::Client$new()
 
@@ -25,7 +22,6 @@ data <- client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?l
 
 # View out the data
 View(data)
-
 ```
 
 This script is also available at [./example.R](example.R)
@@ -61,5 +57,6 @@ If any major changes happen to the source code, it will need to be recompiled. F
 
 ### Author
 Taylor Denouden (taylor.denouden@hakai.org)
+Brett Johnson (brett.johnson@hakair.org)
 
-Copyright (c) 2017 Hakai Institute and individual contributors All Rights Reserved.
+Copyright (c) 2021 Hakai Institute and individual contributors All Rights Reserved.
