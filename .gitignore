@@ -15,7 +15,7 @@
 /*.Rcheck/
 
 # RStudio files
-.Rproj.user/
+hakaiApi/.Rproj.user/
 
 # produced vignettes
 vignettes/*.html
@@ -31,3 +31,7 @@ vignettes/*.pdf
 # Temporary files created by R markdown
 *.utf8.md
 *.knit.md
+inst/doc
+.Rproj.user
+
+.idea/
