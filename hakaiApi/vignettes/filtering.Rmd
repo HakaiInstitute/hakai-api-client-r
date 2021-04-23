@@ -1,32 +1,30 @@
 ---
-title: "hakaiApi Filtering"
+title: "Filtering Example"
 author: "Brett Johnson"
 date: "19/04/2021"
-output: html_document
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Filtering Example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+```{r setup}
+library(hakaiApi)
 
+# Initialize the client
+client <- hakaiApi::Client$new() # follow link in console and paste auth. code in console (ignore alignment issue)
+```
 # Filtering data with the API
 
 Here's a simple demonstration of how to filter data from the API. The API has limits in terms of how much data you can download in one query. So, instead of querying for all data of a certain type, it's good to narrow it down to the time period, sites, or parameters that you are really interested in. Though the API has many options for querying, filtering, and sorting data, most R users will be more comfortable filtering data using R packages such as dplyr.
 
 A good way to build a query is in steps. Let's say we want all the chlorophyll data from QU39, from after 2016, with only accepted values, and only glass fibre filters (GF/F) from the surface.
-
-```{r setup, include=FALSE}
-
-# # install dependant packages
-# install.packages('devtools')
-# library('devtools')
-# 
-# # install hakaiApi library
-# devtools::install_github("HakaiInstitute/hakai-api-client-r", subdir = "hakaiApi")
-
-library(hakaiApi) 
-# Initialize the client
-client <- hakaiApi::Client$new() # follow link in console and paste auth. code in console (ignore alignment issue)
-```
-
-
-
 ```{r filter}
 # First return some chl data with no filters
 all_chl <- client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll") # by default only 20 rows are returned
@@ -35,7 +33,7 @@ str(all_chl) # Look at what columns are available to filter on
 # Narrow it down to QU39
 client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?site_id=QU39")
 
-#Get back only accepted values 
+#Get back only accepted values
 client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?site_id=QU39&chla_flag=AV")
 
 # Remove values before 2016
@@ -51,16 +49,12 @@ client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?site_id=Q
 
 a_great_chl_query <- client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?site_id=QU39&chla_flag=AV&date>2016-01-01&filter_type=GF/F&line_out_depth=0&fields=date,chla&limit=-1")
 
-plot(a_great_chl_query$date, a_great_chl_query$chla)
+# plot(a_great_chl_query$date, a_great_chl_query$chla, xlim = "2021-01-01")
 ```
-
-Let's say you're only interested in rerceiving the highest 10 values for chlorophyll from all of the chlorphyll data in the portal. We can do that with the API as well using the sort descending capability and limiting the return to only 10 values.
-
-
+Let's say you're only interested in receiving the highest 10 values for chlorophyll from all the chlorophyll data in the portal. We can do that with the API as well using the sort descending capability and limiting the return to only 10 values.
 ```{r sort}
 top_10_chl <- client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?fields=date,chla,site_id,line_out_depth&chla>0&sort=-chla&limit=10") #note  you have to add chla>0 to remove NAs
 
 ```
+For more great querying capabilities see [the querying-data docs](https://hakaiinstitute.github.io/hakai-api/querying-data.html)
 
-
-For more great querying capabilities see: https://hakaiinstitute.github.io/hakai-api/querying-data.html
