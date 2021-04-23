@@ -1,8 +1,3 @@
-library(R6)
-library("httr")
-library("urltools")
-library("readr")
-
 #' The Hakai API Client Class
 #'
 #' @description
