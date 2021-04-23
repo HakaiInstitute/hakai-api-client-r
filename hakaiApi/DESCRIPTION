@@ -3,7 +3,7 @@ Title: Create an authenticated HTTP request client for the Hakai API
 Version: 0.1.3
 Authors@R: person("Taylor", "Denouden", email = "taylor.denouden@hakai.org", role = c("aut", "cre"))
 Description: Initalizes a class that obtains API credentials and provides a method to use those credentials to make GET requests to the Hakai API server.
-Depends: R (>= 3.3.3)
+Depends: R (>= 3.3.0)
 Imports:
   httr (>= 1.2.1),
   urltools (>= 1.6.0),
