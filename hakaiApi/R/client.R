@@ -2,6 +2,7 @@
 #'
 #' @description
 #' Class to use to make authenticated API requests for Hakai data
+#' @import R6 httr urltools readr tibble
 #' @export
 Client <- R6::R6Class("Client",
   lock_objects = FALSE,
@@ -17,8 +18,8 @@ Client <- R6::R6Class("Client",
     #' client <- Client$new()
     initialize = function(api_root = "https://hecate.hakai.org/api") {
       self$api_root <- api_root
-      private$authorization_base_url <- paste0(api_root, '/auth/oauth2')
-      private$token_url <- paste0(api_root, '/auth/oauth2/token')
+      private$authorization_base_url <- paste0(api_root, "/auth/oauth2")
+      private$token_url <- paste0(api_root, "/auth/oauth2/token")
 
       credentials <- private$try_to_load_credentials()
       if (is.list(credentials)) {
@@ -31,14 +32,14 @@ Client <- R6::R6Class("Client",
     },
     #'@description
     #' Send a GET request to the API
-    #' @param endpointUrl The full API url to fetch data from
+    #' @param endpoint_url The full API url to fetch data from
     #' @return A dataframe of the requested data
     #' @examples
     #' client$get("https://hecate.hakai.org/api/aco/views/projects")
-    get = function(endpointUrl) {
+    get = function(endpoint_url) {
       token <- paste(private$credentials$token_type,
                      private$credentials$access_token)
-      r <- httr::GET(endpointUrl, httr::add_headers(Authorization = token))
+      r <- httr::GET(endpoint_url, httr::add_headers(Authorization = token))
       data <- private$json2tbl(httr::content(r))
       data <- tibble::as_tibble(data)
       data <- readr::type_convert(data)
@@ -55,11 +56,11 @@ Client <- R6::R6Class("Client",
     }
   ),
   private = list(
-    client_id = paste('289782143400-1f4r7l823cqg8fthd31ch4ug0thpejme',
-                      '.apps.googleusercontent.com'),
+    client_id = paste("289782143400-1f4r7l823cqg8fthd31ch4ug0thpejme",
+                      ".apps.googleusercontent.com"),
     authorization_base_url = NULL,
     token_url = NULL,
-    credentials_file = path.expand('~/.hakai-api-credentials-r'),
+    credentials_file = path.expand("~/.hakai-api-credentials-r"),
     credentials = NULL,
     json2tbl = function(data) {
       data <- lapply(data, function(data) {
