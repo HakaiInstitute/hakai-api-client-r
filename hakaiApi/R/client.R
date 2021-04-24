@@ -4,7 +4,7 @@
 #' Class to use to make authenticated API requests for Hakai data
 #' @import R6 httr urltools readr tibble
 #' @export
-Client <- R6::R6Class("Client",
+Client <- R6::R6Class("Client",  # nolint
   lock_objects = FALSE,
   public = list(
     #' @field api_root The api_root you are logged in to
@@ -37,8 +37,7 @@ Client <- R6::R6Class("Client",
     #' @examples
     #' client$get("https://hecate.hakai.org/api/aco/views/projects")
     get = function(endpoint_url) {
-      token <- paste(private$credentials$token_type,
-                     private$credentials$access_token)
+      token <- paste(private$credentials$token_type, private$credentials$access_token)
       r <- httr::GET(endpoint_url, httr::add_headers(Authorization = token))
       data <- private$json2tbl(httr::content(r))
       data <- tibble::as_tibble(data)
@@ -56,8 +55,7 @@ Client <- R6::R6Class("Client",
     }
   ),
   private = list(
-    client_id = paste("289782143400-1f4r7l823cqg8fthd31ch4ug0thpejme",
-                      ".apps.googleusercontent.com"),
+    client_id = "289782143400-1f4r7l823cqg8fthd31ch4ug0thpejme.apps.googleusercontent.com",
     authorization_base_url = NULL,
     token_url = NULL,
     credentials_file = path.expand("~/.hakai-api-credentials-r"),
@@ -78,9 +76,7 @@ Client <- R6::R6Class("Client",
       code <- urltools::param_get(redirect_response, "code")$code
 
       # Exchange the oAuth2 code for a jwt token
-      res <- httr::POST(private$token_url,
-                        body = list(code = code),
-                        encode = "json")
+      res <- httr::POST(private$token_url, body = list(code = code), encode = "json")
       res_body <- httr::content(res, "parsed")
 
       now <- as.numeric(Sys.time())

@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-```{r setup}
+```{r setup, eval = FALSE}
 library(hakaiApi)
 
 # Initialize the client
@@ -24,16 +24,13 @@ client <- hakaiApi::Client$new()
 ```
 # Filtering data with the API
 
-Here's a simple demonstration of how to filter data from the API. The API has
-limits in terms of how much data you can download in one query. So, instead of
-querying for all data of a certain type, it's good to narrow it down to the time
-period, sites, or parameters that you are really interested in. Though the API
-has many options for querying, filtering, and sorting data, most R users will be
-more comfortable filtering data using R packages such as dplyr.
+Here's a simple demonstration of how to filter data from the API. The API has limits in terms of how much data you can
+download in one query. So, instead of querying for all data of a certain type, it's good to narrow it down to the time
+period, sites, or parameters that you are really interested in. Though the API has many options for querying, filtering,
+and sorting data, most R users will be more comfortable filtering data using R packages such as dplyr.
 
-A good way to build a query is in steps. Let's say we want all the chlorophyll
-data from QU39, from after 2016, with only accepted values, and only glass fibre
-filters (GF/F) from the surface.
+A good way to build a query is in steps. Let's say we want all the chlorophyll data from QU39, from after 2016, with
+only accepted values, and only glass fibre filters (GF/F) from the surface.
 ```{r filter, eval = FALSE}
 # First return some chl data with no filters
 endpoint <- "/eims/views/output/chlorophyll"
@@ -49,8 +46,8 @@ client$get(paste0(client$api_root, endpoint, query))
 query <- "?site_id=QU39&chla_flag=AV"
 client$get(paste0(client$api_root, endpoint, query))
 
-# Remove values before 2016
-query <- "?site_id=QU39&chla_flag=AV&date.year>2016"
+# Get values from 2017
+query <- "?site_id=QU39&chla_flag=AV&date.year=2017"
 client$get(paste0(client$api_root, endpoint, query))
 
 # Include only GF/F from the surface
@@ -58,7 +55,7 @@ client$get(paste0(client$api_root, endpoint, query))
 # Using the paste() or paste0() functions
 query <- paste("site_id=QU39",
                "chla_flag=AV",
-               "date.year>2016",
+               "date.year=2017",
                "filter_type=GF/F",
                "line_out_depth=0", sep = "&")
 client$get(paste0(client$api_root, endpoint, "?", query))
@@ -66,7 +63,7 @@ client$get(paste0(client$api_root, endpoint, "?", query))
 # Select only the columns I'm interested in
 query <- paste("site_id=QU39",
                "chla_flag=AV",
-               "date.year>2016",
+               "date.year=2017",
                "filter_type=GF/F",
                "line_out_depth=0",
                "fields=date,chla,lab_technician", sep = "&")
@@ -75,7 +72,7 @@ client$get(paste0(client$api_root, endpoint, "?", query))
 # This looks good so now you can assign a variable and remove the limit
 query <- paste("site_id=QU39",
                "chla_flag=AV",
-               "date.year>2016",
+               "date.year=2017",
                "filter_type=GF/F",
                "line_out_depth=0",
                "fields=date,chla,lab_technician",
@@ -84,17 +81,16 @@ a_great_chl_query <- client$get(paste0(client$api_root, endpoint, "?", query))
 
 plot(a_great_chl_query$date,
      a_great_chl_query$chla,
-     xlim = as.Date(c("2017-01-01", "2020-01-01")),
+     xlim = as.Date(c("2017-01-01", "2018-01-01")),
      ylim = c(0, 5))
 ```
-Let's say you're only interested in receiving the highest 10 values for
-chlorophyll from all the chlorophyll data in the portal. We can do that with the
-API as well using the sort descending capability and limiting the return to only
-10 values.
+Let's say you're only interested in receiving the highest 10 values for chlorophyll from 2017 from the portal. We can do
+that with the API as well using the sort descending capability and limiting the return to only 10 values.
 ```{r sort, eval = FALSE}
 endpoint <- "/eims/views/output/chlorophyll"
 query <- paste("fields=date,chla,site_id,line_out_depth",
                "chla>0",  # Note: added chla>0 to remove NA values
+               "date.year=2017",
                "sort=-chla",
                "limit=10", sep = "&")
 top_10_chl <- client$get(paste0(client$api_root, endpoint, "?", query))
