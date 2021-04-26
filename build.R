@@ -3,13 +3,13 @@ install.packages("devtools", repos = "https://cloud.r-project.org/")
 install.packages("roxygen2", repos = "https://cloud.r-project.org/")
 install.packages("goodpractice", repos = "https://cloud.r-project.org/")
 install.packages("rhub", repos = "https://cloud.r-project.org/")
-install.packages("remotes")
+install.packages("remotes", repos = "https://cloud.r-project.org/")
 remotes::install_github("jumpingrivers/inteRgrate")
 
 library("usethis")
 library("devtools")
 library("goodpractice")
-# library("rhub")
+library("rhub")
 library("inteRgrate")
 
 # Load or reload the hakaiApi package
@@ -26,11 +26,11 @@ devtools::document()
 devtools::check_man()
 goodpractice::gp()
 
-# # Check for CRAN specific requirements using rhub and save it in the results
-# # objects
-# results <- rhub::check_for_cran()
-# # Get the summary of your results and save to cran-comments.md
-# results$cran_summary()
+# NOTE: Currently fails due to https://github.com/r-hub/rhub/issues/462. Once this issue is solved, we can upload to CRAN
+# Check for CRAN specific requirements using rhub and save it in the results objects
+results <- rhub::check_for_cran()
+# Get the summary of your results and save to cran-comments.md
+results$cran_summary()
 
 # Run inteRgrate checks
 inteRgrate::check_pkg()

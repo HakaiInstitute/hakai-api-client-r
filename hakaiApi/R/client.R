@@ -41,7 +41,8 @@ Client <- R6::R6Class("Client",  # nolint
     #' @examples
     #' client$get("https://hecate.hakai.org/api/aco/views/projects")
     get = function(endpoint_url) {
-      token <- paste(private$credentials$token_type, private$credentials$access_token)
+      token <- paste(private$credentials$token_type,
+                     private$credentials$access_token)
       r <- httr::GET(endpoint_url, httr::add_headers(Authorization = token))
       data <- private$json2tbl(httr::content(r))
       data <- tibble::as_tibble(data)
@@ -59,14 +60,15 @@ Client <- R6::R6Class("Client",  # nolint
     }
   ),
   private = list(
-    client_id = "289782143400-1f4r7l823cqg8fthd31ch4ug0thpejme.apps.googleusercontent.com",
+    client_id = paste0("289782143400-1f4r7l823cqg8fthd31ch4ug0thpejme",
+                       ".apps.googleusercontent.com"),
     authorization_base_url = NULL,
     token_url = NULL,
     credentials_file = path.expand("~/.hakai-api-credentials-r"),
     credentials = NULL,
     json2tbl = function(data) {
       data <- lapply(data, function(data) {
-        data[sapply(data, is.null)] <- NA
+        data[sapply(data, is.null)] <- NA  # nolint
         unlist(data)
       })
       data <- do.call("rbind", data)
@@ -80,7 +82,9 @@ Client <- R6::R6Class("Client",  # nolint
       code <- urltools::param_get(redirect_response, "code")$code
 
       # Exchange the oAuth2 code for a jwt token
-      res <- httr::POST(private$token_url, body = list(code = code), encode = "json")
+      res <- httr::POST(private$token_url,
+                        body = list(code = code),
+                        encode = "json")
       res_body <- httr::content(res, "parsed")
 
       now <- as.numeric(Sys.time())
