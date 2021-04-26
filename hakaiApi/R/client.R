@@ -2,7 +2,11 @@
 #'
 #' @description
 #' Class to use to make authenticated API requests for Hakai data
-#' @import R6 httr urltools readr tibble
+#' @importFrom R6 R6Class
+#' @importFrom httr GET POST add_headers content
+#' @importFrom urltools param_get
+#' @importFrom readr type_convert
+#' @importFrom tibble as_tibble
 #' @export
 Client <- R6::R6Class("Client",  # nolint
   lock_objects = FALSE,
