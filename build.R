@@ -13,24 +13,18 @@ library("rhub")
 library("inteRgrate")
 
 # Load or reload the hakaiApi package
+setwd("./hakaiApi")
 devtools::load_all()
 devtools::reload()
-
-# Initial check package
-devtools::check()
 
 # Generate documentation and build package with roxygen2
 devtools::document()
 
 # Check docs, check for release
 devtools::check_man()
-goodpractice::gp()
 
-# NOTE: Currently fails due to https://github.com/r-hub/rhub/issues/462. Once this issue is solved, we can upload to CRAN
-# Check for CRAN specific requirements using rhub and save it in the results objects
-results <- rhub::check_for_cran()
-# Get the summary of your results and save to cran-comments.md
-results$cran_summary()
+# Check best practices
+goodpractice::gp()
 
 # Run inteRgrate checks
 inteRgrate::check_pkg()
@@ -40,6 +34,12 @@ inteRgrate::check_r_filenames()
 inteRgrate::check_gitignore()
 inteRgrate::check_version()
 
-# Release the package
+# NOTE: Currently fails due to https://github.com/r-hub/rhub/issues/462. Once this issue is solved, we can upload to CRAN
+# Check for CRAN specific requirements using rhub and save it in the results objects
+# results <- rhub::check_for_cran()
+# Get the summary of your results and save to cran-comments.md
+# results$cran_summary()
+
+# Release the package to CRAN
 devtools::release_checks()
-devtools::release()
+# devtools::release()

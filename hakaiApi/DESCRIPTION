@@ -1,6 +1,6 @@
 Package: hakaiApi
 Title: Authenticated HTTP Request Client for the Hakai API
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: 
     c(person(given = "Taylor",
              family = "Denouden",
@@ -34,12 +34,12 @@ Imports:
     httr,
     R6,
     readr,
-    tibble,
-    urltools
-Suggests: 
+    tibble
+Suggests:
     knitr,
+    markdown,
     rmarkdown
-VignetteBuilder: 
+VignetteBuilder:
     knitr
 Encoding: UTF-8
 LazyData: true
