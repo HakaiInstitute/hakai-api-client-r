@@ -28,8 +28,7 @@ Description: Initializes a class that obtains API credentials and provides
 License: MIT + file LICENSE
 URL: https://github.com/HakaiInstitute/hakai-api-client-r
 BugReports: https://github.com/HakaiInstitute/hakai-api-client-r/issues
-Depends: 
-    R (< 4.1.0),
+Depends:
     R (>= 3.3.0)
 Imports:
     httr,
