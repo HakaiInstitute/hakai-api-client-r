@@ -3,8 +3,7 @@
 #' @description
 #' Class to use to make authenticated API requests for Hakai data
 #' @importFrom R6 R6Class
-#' @importFrom httr GET POST add_headers content
-#' @importFrom urltools param_get
+#' @importFrom httr GET add_headers content
 #' @importFrom readr type_convert
 #' @importFrom tibble as_tibble
 #' @export
@@ -85,7 +84,7 @@ Client <- R6::R6Class("Client",  # nolint
       }, error = function(e) {
         # Return dummy credentials
         writeLines("Invalid credential format, try again.")
-        return(data.frame(token_type = c(""), access_token = c(""), expires_at = c(-1)))
+        return(data.frame(token_type = "", access_token = "", expires_at = -1))
       })
     },
     get_credentials_from_web = function() {
@@ -115,7 +114,7 @@ Client <- R6::R6Class("Client",  # nolint
           file.remove(private$credentials_file)
           return(FALSE)
         }
-      }, error = function(e) {
+      }, error = function() {
         # Remove file anyway if there's an error
         file.remove(private$credentials_file)
         return(FALSE)
