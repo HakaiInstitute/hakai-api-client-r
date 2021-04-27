@@ -17,13 +17,15 @@ Client <- R6::R6Class("Client",  # nolint
     #' Log into Google to gain credential access to the API
     #' @param api_root Optional API base url to fetch data.
     #' Defaults to "https://hecate.hakai.org/api"
+    #' @param login_page Optional API login page url to display to user.
+    #' Defaults to "https://hecate.hakai.org/api-client-login"
     #' @return A client instance
     #' @examples
     #' client <- Client$new()
-    initialize = function(api_root = "https://hecate.hakai.org/api") {
+    initialize = function(api_root = "https://hecate.hakai.org/api",
+                          login_page="https://hecate.hakai.org/api-client-login") {
       self$api_root <- api_root
-      private$authorization_base_url <- paste0(api_root, "/auth/oauth2")
-      private$token_url <- paste0(api_root, "/auth/oauth2/token")
+      private$login_page_url <- login_page
 
       credentials <- private$try_to_load_credentials()
       if (is.list(credentials)) {
@@ -60,11 +62,8 @@ Client <- R6::R6Class("Client",  # nolint
     }
   ),
   private = list(
-    client_id = paste0("289782143400-1f4r7l823cqg8fthd31ch4ug0thpejme",
-                       ".apps.googleusercontent.com"),
-    authorization_base_url = NULL,
-    token_url = NULL,
-    credentials_file = path.expand("~/.hakai-api-credentials-r"),
+    login_page_url = NULL,
+    credentials_file = path.expand("~/.hakai-api-auth-r"),
     credentials = NULL,
     json2tbl = function(data) {
       data <- lapply(data, function(data) {
@@ -74,28 +73,29 @@ Client <- R6::R6Class("Client",  # nolint
       data <- do.call("rbind", data)
       return(data)
     },
+    querystring2df = function(querystring) {
+      tryCatch({
+        s <- strsplit(querystring, "&")
+        p <- lapply(s, function(a) {
+          strsplit(a, "=")
+        })
+        df <- data.frame(matrix(unlist(p), ncol = length(unlist(s))))
+        names(df) <- as.character(unlist(df[1, ]))
+        return(df[-1, ])
+      }, error = function(e) {
+        # Return dummy credentials
+        writeLines("Invalid credential format, try again.")
+        return(data.frame(token_type = c(""), access_token = c(""), expires_at = c(-1)))
+      })
+    },
     get_credentials_from_web = function() {
       # Get the user to login and get the oAuth2 code from the redirect url
       writeLines("Please go here and authorize:")
-      writeLines(private$authorization_base_url)
-      redirect_response <- readline("\nPaste the full redirect URL here:\n")
-      code <- urltools::param_get(redirect_response, "code")$code
+      writeLines(private$login_page_url)
+      writeLines("")
 
-      # Exchange the oAuth2 code for a jwt token
-      res <- httr::POST(private$token_url,
-                        body = list(code = code),
-                        encode = "json")
-      res_body <- httr::content(res, "parsed")
-
-      now <- as.numeric(Sys.time())
-      credentials <- list(
-        access_token = res_body$access_token,
-        token_type = res_body$token_type,
-        expires_in = res_body$expires_in,
-        expires_at = now + res_body$expires_in
-      )
-
-      # Return the credentials
+      querystring <- readline("Copy and past your credentials from the login page:\n")
+      credentials <- private$querystring2df(querystring)
       return(credentials)
     },
     try_to_load_credentials = function() {
@@ -107,16 +107,11 @@ Client <- R6::R6Class("Client",  # nolint
       tryCatch({
         # Load the credentials from the file cache
         credentials_file <- file(private$credentials_file, "r")
-        cache <- unserialize(credentials_file)
+        credentials <- unserialize(credentials_file)
         close(credentials_file)
-        api_root <- cache$api_root
-        credentials <- cache$credentials
 
-        # Check api root is the same and that credentials aren't expired
-        same_root <- self$api_root == api_root
-        credentials_expired <- as.numeric(Sys.time()) > credentials$expires_at
-
-        if (!same_root || credentials_expired) {
+        # Check that credentials aren't expired
+        if (as.numeric(Sys.time()) > credentials$expires_at) {
           file.remove(private$credentials_file)
           return(FALSE)
         }
@@ -131,12 +126,8 @@ Client <- R6::R6Class("Client",  # nolint
     },
     save_credentials = function(credentials) {
       # Save the credentials to the self$credentials_file location
-      cache <- list(
-        api_root = self$api_root,
-        credentials = credentials
-      )
       credentials_file <- file(private$credentials_file, "w")
-      serialize(cache, credentials_file)
+      serialize(credentials, credentials_file)
       close(credentials_file)
     }
   )
