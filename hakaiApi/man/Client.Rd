@@ -48,7 +48,10 @@ client$remove_credentials()
 \subsection{Method \code{new()}}{
 Log into Google to gain credential access to the API
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Client$new(api_root = "https://hecate.hakai.org/api")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Client$new(
+  api_root = "https://hecate.hakai.org/api",
+  login_page = "https://hecate.hakai.org/api-client-login"
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -56,6 +59,9 @@ Log into Google to gain credential access to the API
 \describe{
 \item{\code{api_root}}{Optional API base url to fetch data.
 Defaults to "https://hecate.hakai.org/api"}
+
+\item{\code{login_page}}{Optional API login page url to display to user.
+Defaults to "https://hecate.hakai.org/api-client-login"}
 }
 \if{html}{\out{</div>}}
 }
