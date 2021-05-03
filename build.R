@@ -36,9 +36,9 @@ inteRgrate::check_version()
 
 # NOTE: Currently fails due to https://github.com/r-hub/rhub/issues/462. Once this issue is solved, we can upload to CRAN
 # Check for CRAN specific requirements using rhub and save it in the results objects
-# results <- rhub::check_for_cran()
+results <- rhub::check_for_cran()
 # Get the summary of your results and save to cran-comments.md
-# results$cran_summary()
+results$cran_summary()
 
 # Release the package to CRAN
 devtools::release_checks()
