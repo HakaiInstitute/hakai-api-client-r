@@ -1,4 +1,4 @@
-# hakaiApi 0.2.0
+# hakaiApi 1.0.0
 
 * Added a `NEWS.md` file to track changes to the package.
 * Prevent this packages dependencies from clashing with local packages.
