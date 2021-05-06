@@ -26,6 +26,8 @@ devtools::check_man()
 # Check best practices
 goodpractice::gp()
 
+usethis::use_tidy_description()
+
 # Run inteRgrate checks
 inteRgrate::check_pkg()
 inteRgrate::check_lintr()
@@ -33,6 +35,9 @@ inteRgrate::check_tidy_description()
 inteRgrate::check_r_filenames()
 inteRgrate::check_gitignore()
 inteRgrate::check_version()
+
+# Spell check
+devtools::spell_check()
 
 # NOTE: Currently fails due to https://github.com/r-hub/rhub/issues/462. Once this issue is solved, we can upload to CRAN
 # Check for CRAN specific requirements using rhub and save it in the results objects
@@ -42,9 +47,6 @@ results$cran_summary()
 
 # Check for win-development
 devtools::check_win_devel()
-
-# Spell check
-devtools::spell_check()
 
 # One last check before release
 devtools::check()
