@@ -7,6 +7,24 @@
 #' @importFrom readr type_convert
 #' @importFrom tibble as_tibble
 #' @export
+#' @examples
+#' # Initialize a new client
+#' client <- Client$new()
+#' # Follow authorization prompts to log in
+#'
+#' # Retrieve some data. See <https://hakaiinstitute.github.io/hakai-api/> for options.
+#' url <- paste0(client$api_root, "/aco/views/projects?project_year=2020&fields=project_name")
+#' projects_2020 <- client$get(url)
+#'
+#' print(projects_2020)
+#' # # A tibble: 20 x 1
+#' #    project_name
+#' #    <chr>
+#' #  1 Fountain FN
+#' #  2 Haig Glacier
+#' #  3 Fraser River - Chimney Creek West William Canyon
+#' #  4 Cruickshank WS
+#' #  ...
 Client <- R6::R6Class("Client",  # nolint
   lock_objects = FALSE,
   public = list(

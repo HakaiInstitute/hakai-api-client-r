@@ -8,9 +8,6 @@
   checking CRAN incoming feasibility ... NOTE
   Maintainer: 'Taylor Denouden <taylor.denouden@hakai.org>'
   
-  
-  Possibly mis-spelled words in DESCRIPTION:
   New submission
-    Hakai (2:50, 26:67)
 
-- Hakai is the name of a research organization. This package helps to access this their data via an HTTP request API.
+0 errors ✓ | 0 warnings ✓ | 1 note x

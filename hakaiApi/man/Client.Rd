@@ -7,6 +7,23 @@
 Class to use to make authenticated API requests for Hakai data
 }
 \examples{
+# Initialize a new client
+client <- Client$new()
+# Follow authorization prompts to log in
+
+# Retrieve some data. See <https://hakaiinstitute.github.io/hakai-api/> for options.
+url <- paste0(client$api_root, "/aco/views/projects?project_year=2020&fields=project_name")
+projects_2020 <- client$get(url)
+
+print(projects_2020)
+# # A tibble: 20 x 1
+#    project_name
+#    <chr>
+#  1 Fountain FN
+#  2 Haig Glacier
+#  3 Fraser River - Chimney Creek West William Canyon
+#  4 Cruickshank WS
+#  ...
 
 ## ------------------------------------------------
 ## Method `Client$new`

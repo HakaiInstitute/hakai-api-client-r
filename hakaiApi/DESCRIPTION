@@ -1,5 +1,5 @@
 Package: hakaiApi
-Title: Authenticated HTTP Request Client for the Hakai API
+Title: Authenticated HTTP Request Client for the 'Hakai' API
 Version: 1.0.0
 Authors@R: 
     c(person(given = "Taylor",
@@ -12,19 +12,16 @@ Authors@R:
              email = "brett.johnson@hakai.org"),
       person(given = "Nate",
              family = "Rosenstock",
-             role = "aut",
-             email = "nate.rosenstock@hakai.org"),
-      person(given = "Brett",
-             family = "Johnson",
              role = "ctb",
-             email = "brett.johnson@hakai.org"),
+             email = "nate.rosenstock@hakai.org"),
       person(given = "Chris",
              family = "Davis",
              role = "ctb",
              email = "chris.davis@hakai.org"))
 Description: Initializes a class that obtains API credentials and provides
-    a method to use those credentials to make GET requests to the Hakai
-    API server.
+    a method to use those credentials to make GET requests to the 'Hakai'
+    API server. Usage instructions are documented at
+    <https://hakaiinstitute.github.io/hakai-api/>.
 License: MIT + file LICENSE
 URL: https://github.com/HakaiInstitute/hakai-api-client-r
 BugReports: https://github.com/HakaiInstitute/hakai-api-client-r/issues
