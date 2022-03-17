@@ -6,6 +6,7 @@
 #' @importFrom httr GET add_headers content
 #' @importFrom readr type_convert
 #' @importFrom tibble as_tibble
+#' @importFrom dplyr bind_rows
 #' @export
 #' @examples
 #' # Initialize a new client
@@ -88,7 +89,7 @@ Client <- R6::R6Class("Client",  # nolint
         data[sapply(data, is.null)] <- NA  # nolint
         unlist(data)
       })
-      data <- do.call("rbind", data)
+      data <- bind_rows(data)
       return(data)
     },
     querystring2df = function(querystring) {

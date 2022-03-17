@@ -2,6 +2,7 @@
 
 export(Client)
 importFrom(R6,R6Class)
+importFrom(dplyr,bind_rows)
 importFrom(httr,GET)
 importFrom(httr,add_headers)
 importFrom(httr,content)

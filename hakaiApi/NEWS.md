@@ -1,5 +1,9 @@
 # hakaiApi 1.0.1
 
+Enhancements
+
+* Now uses dplyr::bind_rows for more robust conversion of JSON received from the server.
+
 Bug fixes
 
 * Fixes issue where api credentials were not saved or loaded properly.
