@@ -1,6 +1,6 @@
 Package: hakaiApi
 Title: Authenticated HTTP Request Client for the 'Hakai' API
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(
     person("Taylor", "Denouden", , "taylor.denouden@hakai.org", role = c("aut", "cre")),
     person("Brett", "Johnson", , "brett.johnson@hakai.org", role = "aut"),
@@ -30,4 +30,4 @@ VignetteBuilder:
     knitr
 Encoding: UTF-8
 Language: en-CA
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
