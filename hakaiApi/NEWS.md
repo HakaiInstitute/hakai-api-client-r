@@ -1,3 +1,9 @@
+# hakaiApi 1.0.1
+
+Bug fixes
+
+* Fixes issue where api credentials were not saved or loaded properly.
+
 # hakaiApi 1.0.0
 
 * Added a `NEWS.md` file to track changes to the package.
