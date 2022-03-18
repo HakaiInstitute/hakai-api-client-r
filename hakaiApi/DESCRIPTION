@@ -1,23 +1,12 @@
 Package: hakaiApi
 Title: Authenticated HTTP Request Client for the 'Hakai' API
-Version: 1.0.0
-Authors@R: 
-    c(person(given = "Taylor",
-             family = "Denouden",
-             role = c("aut", "cre"),
-             email = "taylor.denouden@hakai.org"),
-      person(given = "Brett",
-             family = "Johnson",
-             role = "aut",
-             email = "brett.johnson@hakai.org"),
-      person(given = "Nate",
-             family = "Rosenstock",
-             role = "ctb",
-             email = "nate.rosenstock@hakai.org"),
-      person(given = "Chris",
-             family = "Davis",
-             role = "ctb",
-             email = "chris.davis@hakai.org"))
+Version: 1.0.1
+Authors@R: c(
+    person("Taylor", "Denouden", , "taylor.denouden@hakai.org", role = c("aut", "cre")),
+    person("Brett", "Johnson", , "brett.johnson@hakai.org", role = "aut"),
+    person("Nate", "Rosenstock", , "nate.rosenstock@hakai.org", role = "ctb"),
+    person("Chris", "Davis", , "chris.davis@hakai.org", role = "ctb")
+  )
 Description: Initializes a class that obtains API credentials and provides
     a method to use those credentials to make GET requests to the 'Hakai'
     API server. Usage instructions are documented at
@@ -28,6 +17,7 @@ BugReports: https://github.com/HakaiInstitute/hakai-api-client-r/issues
 Depends:
     R (>= 3.3.0)
 Imports:
+    dplyr,
     httr,
     R6,
     readr,
@@ -40,4 +30,4 @@ VignetteBuilder:
     knitr
 Encoding: UTF-8
 Language: en-CA
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2

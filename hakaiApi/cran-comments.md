@@ -4,10 +4,6 @@
 - R-hub fedora-clang-devel (r-devel)
 
 ## R CMD check results
-> On windows-x86_64-devel (r-devel), ubuntu-gcc-release (r-release), fedora-clang-devel (r-devel)
-  checking CRAN incoming feasibility ... NOTE
-  Maintainer: 'Taylor Denouden <taylor.denouden@hakai.org>'
-  
-  New submission
+Duration: 15.8s
 
-0 errors ✓ | 0 warnings ✓ | 1 note x
+0 errors ✓ | 0 warnings ✓ | 0 notes ✓
