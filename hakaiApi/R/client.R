@@ -131,13 +131,15 @@ Client <- R6::R6Class("Client",  # nolint
 
         # Check that credentials aren't expired
         if (as.numeric(Sys.time()) > credentials$expires_at) {
-          file.remove(private$credentials_file)
-          return(FALSE)
+          self$remove_credentials()
+          credentials <- FALSE
         }
-      }, error = function() {
-        # Remove file anyway if there's an error
-        file.remove(private$credentials_file)
-        return(FALSE)
+      },
+      error = function(cond) {
+        message("Error reading cached credentials:")
+        message(cond[1])
+        self$remove_credentials()
+        credentials <<- FALSE
       })
 
       # If all is well, return the credentials

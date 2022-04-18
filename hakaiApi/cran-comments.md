@@ -4,6 +4,9 @@
 - R-hub fedora-clang-devel (r-devel)
 
 ## R CMD check results
-Duration: 15.8s
+> On windows-x86_64-devel (r-devel)
+  checking for detritus in the temp directory ... NOTE
+  Found the following files/directories:
+    'lastMiKTeXException'
 
-0 errors ✓ | 0 warnings ✓ | 0 notes ✓
+0 errors ✓ | 0 warnings ✓ | 1 note x
