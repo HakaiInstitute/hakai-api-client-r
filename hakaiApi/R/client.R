@@ -6,6 +6,7 @@
 #' @importFrom httr GET add_headers content
 #' @importFrom readr type_convert
 #' @importFrom tibble as_tibble
+#' @importFrom dplyr bind_rows
 #' @export
 #' @examples
 #' # Initialize a new client
@@ -43,6 +44,7 @@ Client <- R6::R6Class("Client",  # nolint
                           login_page="https://hecate.hakai.org/api-client-login") {
       self$api_root <- api_root
       private$login_page_url <- login_page
+      private$credentials_file <- path.expand("~/.hakai-api-auth-r")
 
       credentials <- private$try_to_load_credentials()
       if (is.list(credentials)) {
@@ -80,14 +82,14 @@ Client <- R6::R6Class("Client",  # nolint
   ),
   private = list(
     login_page_url = NULL,
-    credentials_file = path.expand("~/.hakai-api-auth-r"),
+    credentials_file = NULL,
     credentials = NULL,
     json2tbl = function(data) {
       data <- lapply(data, function(data) {
         data[sapply(data, is.null)] <- NA  # nolint
         unlist(data)
       })
-      data <- do.call("rbind", data)
+      data <- bind_rows(data)
       return(data)
     },
     querystring2df = function(querystring) {
@@ -129,13 +131,15 @@ Client <- R6::R6Class("Client",  # nolint
 
         # Check that credentials aren't expired
         if (as.numeric(Sys.time()) > credentials$expires_at) {
-          file.remove(private$credentials_file)
-          return(FALSE)
+          self$remove_credentials()
+          credentials <- FALSE
         }
-      }, error = function() {
-        # Remove file anyway if there's an error
-        file.remove(private$credentials_file)
-        return(FALSE)
+      },
+      error = function(cond) {
+        message("Error reading cached credentials:")
+        message(cond[1])
+        self$remove_credentials()
+        credentials <<- FALSE
       })
 
       # If all is well, return the credentials
