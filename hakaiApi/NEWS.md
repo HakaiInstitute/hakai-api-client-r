@@ -1,3 +1,9 @@
+# hakaiApi 1.0.2
+
+Bug fixes
+
+* Fixes issue where loading cached api credentials sometimes caused cryptic error message and failed to delete the offending corrupted credentials file.
+
 # hakaiApi 1.0.1
 
 Enhancements
