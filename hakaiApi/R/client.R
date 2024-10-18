@@ -4,6 +4,7 @@
 #' Class to use to make authenticated API requests for Hakai data
 #' @importFrom R6 R6Class
 #' @importFrom httr GET add_headers content
+#' @importFrom httr2 request req_headers req_method req_body_json req_perform 
 #' @importFrom readr type_convert
 #' @importFrom tibble as_tibble
 #' @importFrom dplyr bind_rows
@@ -64,12 +65,67 @@ Client <- R6::R6Class("Client",  # nolint
     get = function(endpoint_url) {
       token <- paste(private$credentials$token_type,
                      private$credentials$access_token)
-      r <- httr::GET(endpoint_url, httr::add_headers(Authorization = token))
-      data <- private$json2tbl(httr::content(r))
+      r <- httr2::request(endpoint_url) |>
+        httr2::req_headers("Authorization" = token) |>
+        httr2::req_perform()
+      data <- private$json2tbl(httr2::resp_body_json(r))
       data <- tibble::as_tibble(data)
       data <- readr::type_convert(data)
       return(data)
     },
+
+    #'@description
+    #' Send a POST request to the API
+    #' @param endpoint_url The full API url to fetch data from
+    #' @param rec_data dataframe, list, or other R data structure to send as part of the post request payload
+    #' @return post request response status code and description
+    post = function(endpoint_url, rec_data) {
+      token <- paste(private$credentials$token_type,
+                     private$credentials$access_token)
+      resp <- httr2::request(endpoint_url) |>
+        httr2::req_headers("Authorization" = token) |>
+        httr2::req_method("POST") |>
+        httr2::req_body_json(rec_data) |>
+        httr2::req_perform()
+      data <- paste0(httr2::resp_status(resp), ' ',  httr2::resp_status_desc(resp))
+      return(data)
+    },
+
+    #'@description
+    #' Send a PUT request to the API
+    #' @param endpoint_url The full API url to fetch data from
+    #' @param rec_data dataframe, list, or other R data structure to send as part of the post request payload
+    #' @return PUT request response status code and description
+    put = function(endpoint_url, rec_data) {
+      token <- paste(private$credentials$token_type,
+                     private$credentials$access_token)
+      resp <- httr2::request(endpoint_url) |>
+        httr2::req_headers("Authorization" = token) |>
+        httr2::req_body_json(data = rec_data, auto_unbox = TRUE) |>
+        httr2::req_method("PUT") |>
+        httr2::req_perform()
+      data <- paste0(httr2::resp_status(resp), ' ',  httr2::resp_status_desc(resp))
+      return(resp)
+    },
+
+    #'@description
+    #' Send a PATCH request to the API
+    #' @param endpoint_url The full API url to fetch data from
+    #' @param rec_data dataframe, list, or other R data structure to send as part of the post request payload
+    #' @return PATCH request response status code and description
+    patch = function(endpoint_url, rec_data) {
+      token <- paste(private$credentials$token_type,
+                     private$credentials$access_token)
+      resp <- httr2::request(endpoint_url) |>
+        httr2::req_headers("Authorization" = token) |>
+        httr2::req_body_json(data = rec_data, auto_unbox = TRUE) |>
+        httr2::req_method("PATCH") |>
+        httr2::req_verbose() |>
+        httr2::req_perform()
+      data <- paste0(httr2::resp_status(resp), ' ',  httr2::resp_status_desc(resp))
+      return(resp)
+    },
+
     #' @description
     #' Remove your cached login credentials to logout of the client
     #' @examples
