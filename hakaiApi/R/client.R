@@ -119,7 +119,6 @@ Client <- R6::R6Class("Client",  # nolint
         httr2::req_headers("Authorization" = token) |>
         httr2::req_body_json(data = rec_data, auto_unbox = TRUE) |>
         httr2::req_method("PATCH") |>
-        httr2::req_verbose() |>
         httr2::req_perform()
       data <- paste0(httr2::resp_status(resp), ' ',  httr2::resp_status_desc(resp))
       return(resp)
