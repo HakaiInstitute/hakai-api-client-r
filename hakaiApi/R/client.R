@@ -3,7 +3,6 @@
 #' @description
 #' Class to use to make authenticated API requests for Hakai data
 #' @importFrom R6 R6Class
-#' @importFrom httr GET add_headers content
 #' @importFrom httr2 request req_headers req_method req_body_json req_perform 
 #' @importFrom readr type_convert
 #' @importFrom tibble as_tibble

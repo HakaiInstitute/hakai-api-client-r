@@ -173,10 +173,23 @@ PUT request response status code and description
 \if{html}{\out{<a id="method-Client-patch"></a>}}
 \if{latex}{\out{\hypertarget{method-Client-patch}{}}}
 \subsection{Method \code{patch()}}{
+Send a PATCH request to the API
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Client$patch(endpoint_url, rec_data)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{endpoint_url}}{The full API url to fetch data from}
+
+\item{\code{rec_data}}{dataframe, list, or other R data structure to send as part of the post request payload}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+PATCH request response status code and description
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Client-remove_credentials"></a>}}
