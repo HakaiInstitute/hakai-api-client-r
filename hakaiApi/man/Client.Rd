@@ -53,15 +53,18 @@ client$remove_credentials()
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{Client$new()}}
-\item \href{#method-get}{\code{Client$get()}}
-\item \href{#method-remove_credentials}{\code{Client$remove_credentials()}}
-\item \href{#method-clone}{\code{Client$clone()}}
+\item \href{#method-Client-new}{\code{Client$new()}}
+\item \href{#method-Client-get}{\code{Client$get()}}
+\item \href{#method-Client-post}{\code{Client$post()}}
+\item \href{#method-Client-put}{\code{Client$put()}}
+\item \href{#method-Client-patch}{\code{Client$patch()}}
+\item \href{#method-Client-remove_credentials}{\code{Client$remove_credentials()}}
+\item \href{#method-Client-clone}{\code{Client$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-Client-new"></a>}}
+\if{latex}{\out{\hypertarget{method-Client-new}{}}}
 \subsection{Method \code{new()}}{
 Log into Google to gain credential access to the API
 \subsection{Usage}{
@@ -95,8 +98,8 @@ A client instance
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get"></a>}}
-\if{latex}{\out{\hypertarget{method-get}{}}}
+\if{html}{\out{<a id="method-Client-get"></a>}}
+\if{latex}{\out{\hypertarget{method-Client-get}{}}}
 \subsection{Method \code{get()}}{
 Send a GET request to the API
 \subsection{Usage}{
@@ -123,8 +126,74 @@ A dataframe of the requested data
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-remove_credentials"></a>}}
-\if{latex}{\out{\hypertarget{method-remove_credentials}{}}}
+\if{html}{\out{<a id="method-Client-post"></a>}}
+\if{latex}{\out{\hypertarget{method-Client-post}{}}}
+\subsection{Method \code{post()}}{
+Send a POST request to the API
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Client$post(endpoint_url, rec_data)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{endpoint_url}}{The full API url to fetch data from}
+
+\item{\code{rec_data}}{dataframe, list, or other R data structure to send as part of the post request payload}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+post request response status code and description
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Client-put"></a>}}
+\if{latex}{\out{\hypertarget{method-Client-put}{}}}
+\subsection{Method \code{put()}}{
+Send a PUT request to the API
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Client$put(endpoint_url, rec_data)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{endpoint_url}}{The full API url to fetch data from}
+
+\item{\code{rec_data}}{dataframe, list, or other R data structure to send as part of the post request payload}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+PUT request response status code and description
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Client-patch"></a>}}
+\if{latex}{\out{\hypertarget{method-Client-patch}{}}}
+\subsection{Method \code{patch()}}{
+Send a PATCH request to the API
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Client$patch(endpoint_url, rec_data)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{endpoint_url}}{The full API url to fetch data from}
+
+\item{\code{rec_data}}{dataframe, list, or other R data structure to send as part of the post request payload}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+PATCH request response status code and description
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Client-remove_credentials"></a>}}
+\if{latex}{\out{\hypertarget{method-Client-remove_credentials}{}}}
 \subsection{Method \code{remove_credentials()}}{
 Remove your cached login credentials to logout of the client
 \subsection{Usage}{
@@ -141,8 +210,8 @@ Remove your cached login credentials to logout of the client
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-Client-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-Client-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

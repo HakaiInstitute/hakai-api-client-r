@@ -18,7 +18,7 @@ Depends:
     R (>= 3.3.0)
 Imports:
     dplyr,
-    httr,
+    httr2,
     R6,
     readr,
     tibble
@@ -30,4 +30,4 @@ VignetteBuilder:
     knitr
 Encoding: UTF-8
 Language: en-CA
-RoxygenNote: 7.1.2
+RoxygenNote: 7.3.2
