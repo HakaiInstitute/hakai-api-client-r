@@ -152,6 +152,10 @@ Client <- R6::R6Class("Client",  # nolint
     credentials_file = NULL,
     credentials = NULL,
     json2tbl = function(data) {
+      # Handle special case of single vectors
+      if (all(sapply(data, length) == 1)) {
+        return(unlist(data))
+      }
       data <- lapply(data, function(data) {
         data[sapply(data, is.null)] <- NA  # nolint
         unlist(data)
