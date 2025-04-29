@@ -78,9 +78,9 @@ Client <- R6::R6Class("Client",  # nolint
     get = function(endpoint_url) {
       token <- paste(private$credentials$token_type,
                      private$credentials$access_token)
-      r <- httr2::request(endpoint_url) |>
-        httr2::req_headers("Authorization" = token) |>
+      r <- base_request(endpoint_url, token) |> 
         httr2::req_perform()
+      data <- httr2::resp_body_json(r)
       data <- private$json2tbl(httr2::resp_body_json(r))
       data <- tibble::as_tibble(data)
       data <- readr::type_convert(data)
@@ -95,8 +95,7 @@ Client <- R6::R6Class("Client",  # nolint
     post = function(endpoint_url, rec_data) {
       token <- paste(private$credentials$token_type,
                      private$credentials$access_token)
-      resp <- httr2::request(endpoint_url) |>
-        httr2::req_headers("Authorization" = token) |>
+      resp <- base_request(endpoint_url, token) |>
         httr2::req_method("POST") |>
         httr2::req_body_json(rec_data) |>
         httr2::req_perform()
@@ -112,8 +111,7 @@ Client <- R6::R6Class("Client",  # nolint
     put = function(endpoint_url, rec_data) {
       token <- paste(private$credentials$token_type,
                      private$credentials$access_token)
-      resp <- httr2::request(endpoint_url) |>
-        httr2::req_headers("Authorization" = token) |>
+      resp <- base_request(endpoint_url, token) |>
         httr2::req_body_json(data = rec_data, auto_unbox = TRUE) |>
         httr2::req_method("PUT") |>
         httr2::req_perform()
@@ -129,8 +127,7 @@ Client <- R6::R6Class("Client",  # nolint
     patch = function(endpoint_url, rec_data) {
       token <- paste(private$credentials$token_type,
                      private$credentials$access_token)
-      resp <- httr2::request(endpoint_url) |>
-        httr2::req_headers("Authorization" = token) |>
+      resp <- base_request(endpoint_url, token) |>
         httr2::req_body_json(data = rec_data, auto_unbox = TRUE) |>
         httr2::req_method("PATCH") |>
         httr2::req_perform()
