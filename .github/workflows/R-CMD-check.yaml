@@ -12,10 +12,10 @@ permissions: read-all
 jobs:
   R-CMD-check:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: /hakaiApi
+    # defaults:
+    #   run:
+    #     shell: bash
+    #     working-directory: /hakaiApi
 
 
     env:
