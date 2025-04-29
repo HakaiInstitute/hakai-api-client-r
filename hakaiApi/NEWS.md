@@ -1,3 +1,9 @@
+# hakaiApi 1.0.2.9000
+
+Enhancements
+
+* wrap examples in `try()`
+
 # hakaiApi 1.0.2
 
 Bug fixes
