@@ -121,13 +121,15 @@ A client instance
 \subsection{Method \code{get()}}{
 Send a GET request to the API
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Client$get(endpoint_url)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Client$get(endpoint_url, col_types = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{endpoint_url}}{The full API url to fetch data from}
+
+\item{\code{col_types}}{a readr type specification}
 }
 \if{html}{\out{</div>}}
 }

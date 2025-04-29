@@ -72,10 +72,11 @@ Client <- R6::R6Class("Client",  # nolint
     #'@description
     #' Send a GET request to the API
     #' @param endpoint_url The full API url to fetch data from
+    #' @param col_types a readr type specification  
     #' @return A dataframe of the requested data
     #' @examples
     #' try(client$get("https://hecate.hakai.org/api/aco/views/projects"))
-    get = function(endpoint_url) {
+    get = function(endpoint_url, col_types = NULL) {
       token <- paste(private$credentials$token_type,
                      private$credentials$access_token)
       r <- base_request(endpoint_url, token) |> 
@@ -83,7 +84,7 @@ Client <- R6::R6Class("Client",  # nolint
       data <- httr2::resp_body_json(r)
       data <- private$json2tbl(httr2::resp_body_json(r))
       data <- tibble::as_tibble(data)
-      data <- readr::type_convert(data)
+      data <- readr::type_convert(data, col_types = col_types)
       return(data)
     },
 
@@ -152,16 +153,7 @@ Client <- R6::R6Class("Client",  # nolint
     credentials_file = NULL,
     credentials = NULL,
     json2tbl = function(data) {
-      # Handle special case of single vectors
-      if (all(sapply(data, length) == 1)) {
-        return(unlist(data))
-      }
-      data <- lapply(data, function(data) {
-        data[sapply(data, is.null)] <- NA  # nolint
-        unlist(data)
-      })
-      data <- bind_rows(data)
-      return(data)
+      json2tbl_impl(data)
     },
     querystring2df = function(querystring) {
       tryCatch({
