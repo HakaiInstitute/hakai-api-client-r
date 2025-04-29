@@ -9,15 +9,26 @@
 #' @importFrom dplyr bind_rows
 #' @export
 #' @examples
+#' \dontrun{
 #' # Initialize a new client
-#' client <- Client$new()
+#' try(
+#'   client <- Client$new()
+#' )
+#' 
 #' # Follow authorization prompts to log in
 #'
 #' # Retrieve some data. See <https://hakaiinstitute.github.io/hakai-api/> for options.
-#' url <- paste0(client$api_root, "/aco/views/projects?project_year=2020&fields=project_name")
-#' projects_2020 <- client$get(url)
+#' try(
+#'   url <- paste0(client$api_root, "/aco/views/projects?project_year=2020&fields=project_name")
+#' )
 #'
-#' print(projects_2020)
+#' try(
+#'   projects_2020 <- client$get(url)
+#' )
+#'
+#' try(
+#'   print(projects_2020)
+#' )
 #' # # A tibble: 20 x 1
 #' #    project_name
 #' #    <chr>
@@ -26,6 +37,7 @@
 #' #  3 Fraser River - Chimney Creek West William Canyon
 #' #  4 Cruickshank WS
 #' #  ...
+#' }
 Client <- R6::R6Class("Client",  # nolint
   lock_objects = FALSE,
   public = list(
@@ -39,7 +51,9 @@ Client <- R6::R6Class("Client",  # nolint
     #' Defaults to "https://hecate.hakai.org/api-client-login"
     #' @return A client instance
     #' @examples
-    #' client <- Client$new()
+    #' try(
+    #'    client <- Client$new()
+    #' )
     initialize = function(api_root = "https://hecate.hakai.org/api",
                           login_page="https://hecate.hakai.org/api-client-login") {
       self$api_root <- api_root
@@ -60,7 +74,7 @@ Client <- R6::R6Class("Client",  # nolint
     #' @param endpoint_url The full API url to fetch data from
     #' @return A dataframe of the requested data
     #' @examples
-    #' client$get("https://hecate.hakai.org/api/aco/views/projects")
+    #' try(client$get("https://hecate.hakai.org/api/aco/views/projects"))
     get = function(endpoint_url) {
       token <- paste(private$credentials$token_type,
                      private$credentials$access_token)
@@ -127,7 +141,9 @@ Client <- R6::R6Class("Client",  # nolint
     #' @description
     #' Remove your cached login credentials to logout of the client
     #' @examples
-    #' client$remove_credentials()
+    #' try(
+    #'    client$remove_credentials()
+    #' )
     remove_credentials = function() {
       if (file.exists(private$credentials_file)) {
         file.remove(private$credentials_file)

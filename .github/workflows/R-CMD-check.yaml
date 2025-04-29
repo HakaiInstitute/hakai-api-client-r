@@ -12,9 +12,6 @@ permissions: read-all
 jobs:
   R-CMD-check:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./hakaiApi
 
 
     env:
@@ -31,8 +28,10 @@ jobs:
         with:
           extra-packages: any::rcmdcheck
           needs: check
+          working-directory: hakaiApi
 
       - uses: r-lib/actions/check-r-package@v2
         with:
+          working-directory: hakaiApi
           upload-snapshots: true
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'

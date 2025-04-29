@@ -7,15 +7,26 @@
 Class to use to make authenticated API requests for Hakai data
 }
 \examples{
+\dontrun{
 # Initialize a new client
-client <- Client$new()
+try(
+  client <- Client$new()
+)
+
 # Follow authorization prompts to log in
 
 # Retrieve some data. See <https://hakaiinstitute.github.io/hakai-api/> for options.
-url <- paste0(client$api_root, "/aco/views/projects?project_year=2020&fields=project_name")
-projects_2020 <- client$get(url)
+try(
+  url <- paste0(client$api_root, "/aco/views/projects?project_year=2020&fields=project_name")
+)
 
-print(projects_2020)
+try(
+  projects_2020 <- client$get(url)
+)
+
+try(
+  print(projects_2020)
+)
 # # A tibble: 20 x 1
 #    project_name
 #    <chr>
@@ -24,24 +35,29 @@ print(projects_2020)
 #  3 Fraser River - Chimney Creek West William Canyon
 #  4 Cruickshank WS
 #  ...
+}
 
 ## ------------------------------------------------
 ## Method `Client$new`
 ## ------------------------------------------------
 
-client <- Client$new()
+try(
+   client <- Client$new()
+)
 
 ## ------------------------------------------------
 ## Method `Client$get`
 ## ------------------------------------------------
 
-client$get("https://hecate.hakai.org/api/aco/views/projects")
+try(client$get("https://hecate.hakai.org/api/aco/views/projects"))
 
 ## ------------------------------------------------
 ## Method `Client$remove_credentials`
 ## ------------------------------------------------
 
-client$remove_credentials()
+try(
+   client$remove_credentials()
+)
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -90,7 +106,9 @@ A client instance
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{client <- Client$new()
+\preformatted{try(
+   client <- Client$new()
+)
 }
 \if{html}{\out{</div>}}
 
@@ -118,7 +136,7 @@ A dataframe of the requested data
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{client$get("https://hecate.hakai.org/api/aco/views/projects")
+\preformatted{try(client$get("https://hecate.hakai.org/api/aco/views/projects"))
 }
 \if{html}{\out{</div>}}
 
@@ -202,7 +220,9 @@ Remove your cached login credentials to logout of the client
 
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{client$remove_credentials()
+\preformatted{try(
+   client$remove_credentials()
+)
 }
 \if{html}{\out{</div>}}
 
