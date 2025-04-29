@@ -15,7 +15,7 @@ License: MIT + file LICENSE
 URL: https://github.com/HakaiInstitute/hakai-api-client-r
 BugReports: https://github.com/HakaiInstitute/hakai-api-client-r/issues
 Depends:
-    R (>= 3.3.0)
+    R (>= 4.2.0)
 Imports:
     dplyr,
     httr2,
