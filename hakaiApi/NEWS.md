@@ -10,6 +10,7 @@ Enhancements
 * wrap examples in `try()`
 * now setting the user agent for the client
 * extract `base_request` and `json2tbl` into separate functions to add some unit tests
+* user agent can now be customized via the `HAKAI_API_USER_AGENT` environment variable
 
 
 # hakaiApi 1.0.2
