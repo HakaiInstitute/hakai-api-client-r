@@ -5,6 +5,7 @@ Authors@R: c(
     person("Taylor", "Denouden", , "taylor.denouden@hakai.org", role = c("aut", "cre")),
     person("Brett", "Johnson", , "brett.johnson@hakai.org", role = "aut"),
     person("Nate", "Rosenstock", , "nate.rosenstock@hakai.org", role = "ctb"),
+    person("Sam", "Albers", , "sam.albers@hakai.org", role = "ctb"),
     person("Chris", "Davis", , "chris.davis@hakai.org", role = "ctb")
   )
 Description: Initializes a class that obtains API credentials and provides
