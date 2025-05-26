@@ -1,3 +1,6 @@
+## Note
+Maitainer change from: Taylor Denouden to Sam Albers
+
 ## Test environments
 * local macOS, R 4.4.3(via R CMD check --as-cran)
 * ubuntu-24.04.2, r: 'release' (github actions)
