@@ -1,4 +1,4 @@
-# hakaiApi 1.0.2.9000
+# hakaiApi 1.0.3
 
 Bug fixes
 * `get` method now returns tibbles for list responses
