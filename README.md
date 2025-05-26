@@ -58,7 +58,7 @@ print(client$api_root) # http://localhost:8666
 ```
 
 ## Contributing
-The source code for the client class is located at [./hakaiApi/R/Client.R](hakaiApi/R/Client.R).
+The source code for the client class is located at [./hakaiApi/R/client.R](hakaiApi/R/client.R) and [./hakaiApi/R/utils.R](hakaiApi/R/utils.R).
 This class defines a number of public and private variables and methods that make this request client work. The development of this class was largely informed by the R project's [R6 class documentation](https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html). To build this class into a R package, [this tutorial](https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/) was followed.
 
 ### Building the source code

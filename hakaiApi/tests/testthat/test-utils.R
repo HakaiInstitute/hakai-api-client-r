@@ -1,10 +1,39 @@
-test_that("base_request returns ", {
+test_that("base_request returns request with default user agent", {
+  # Ensure env var is not set
+  old_user_agent <- Sys.getenv("HAKAI_API_USER_AGENT")
+  Sys.unsetenv("HAKAI_API_USER_AGENT")
+  
   req <- base_request("artoo", "detoo")
 
   expect_s3_class(req, "httr2_request")
   expect_equal(req$url, "artoo")
   expect_equal(req$headers$Authorization, "detoo")
   expect_equal(req$options$useragent, "hakai-api-client-r")
+  
+  # Restore previous env var if it existed
+  if (old_user_agent != "") {
+    Sys.setenv(HAKAI_API_USER_AGENT = old_user_agent)
+  }
+})
+
+test_that("base_request uses user agent from environment variable", {
+  # Set custom user agent
+  old_user_agent <- Sys.getenv("HAKAI_API_USER_AGENT")
+  Sys.setenv(HAKAI_API_USER_AGENT = "custom-test-agent")
+  
+  req <- base_request("artoo", "detoo")
+
+  expect_s3_class(req, "httr2_request")
+  expect_equal(req$url, "artoo")
+  expect_equal(req$headers$Authorization, "detoo")
+  expect_equal(req$options$useragent, "custom-test-agent")
+  
+  # Restore previous env var if it existed
+  if (old_user_agent != "") {
+    Sys.setenv(HAKAI_API_USER_AGENT = old_user_agent)
+  } else {
+    Sys.unsetenv("HAKAI_API_USER_AGENT")
+  }
 })
 
 
