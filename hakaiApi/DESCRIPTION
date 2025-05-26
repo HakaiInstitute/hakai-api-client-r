@@ -7,7 +7,7 @@ Authors@R: c(
     person("Brett", "Johnson", , "brett.johnson@hakai.org", role = "aut"),
     person("Nate", "Rosenstock", , "nate.rosenstock@hakai.org", role = "ctb"),
     person("Chris", "Davis", , "chris.davis@hakai.org", role = "ctb"),
-    person("Hakai Institute", role = "cph")
+    person("Hakai Institute", , role = "cph")
   )
 Description: Initializes a class that obtains API credentials and provides
     a method to use those credentials to make GET requests to the 'Hakai'
