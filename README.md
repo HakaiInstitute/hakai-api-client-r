@@ -1,5 +1,10 @@
 # Hakai API R Client
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![R build status](https://github.com/HakaiInstitute/hakai-api-client-r/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/HakaiInstitute/hakai-api-client-r/actions/workflows/R-CMD-check.yaml)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/hakaiApi)](https://cran.r-project.org/package=hakaiApi)
+[![cran checks](https://badges.cranchecks.info/worst/hakaiApi.svg)](https://cran.r-project.org/web/checks/check_results_hakaiApi.html)
+
 This project exports a single R6 class for the R programming language that can be used to make HTTP requests to the Hakai API resource server. The Class provides a "get" method to make Authenticated requests to the Hakai API data server without needing to know the details of the authentication process.
 
 ## Installation
@@ -60,7 +65,7 @@ This class defines a number of public and private variables and methods that mak
 If any major changes happen to the source code, it will need to be recompiled. Fortunately, this is very simple. To compile the source code, execute the [./build.R script](build.R), by typing `R < build.R --vanilla` into your terminal. This should update all the other files in the hakaiApi subdirectory of this project that require updating. Don't forget to push these changes to the Github repo
 
 ### Author
+Sam Albers (sam.albers@hakai.org)
 Taylor Denouden (taylor.denouden@hakai.org)
-Brett Johnson (brett.johnson@hakair.org)
 
-Copyright (c) 2021 Hakai Institute and individual contributors All Rights Reserved.
+Copyright (c) 2025 Hakai Institute and individual contributors All Rights Reserved.
