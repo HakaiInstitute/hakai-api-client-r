@@ -3,6 +3,7 @@
 Bug fixes
 * `get` method now returns tibbles for list responses
 * bump minimum R version to 4.2 to handle using native pipe
+* change maintainer
 
 
 Enhancements
