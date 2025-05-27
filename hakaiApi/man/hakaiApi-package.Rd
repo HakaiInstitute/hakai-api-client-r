@@ -17,18 +17,19 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Taylor Denouden \email{taylor.denouden@hakai.org}
+\strong{Maintainer}: Sam Albers \email{sam.albers@hakai.org}
 
 Authors:
 \itemize{
+  \item Taylor Denouden \email{taylor.denouden@hakai.org}
   \item Brett Johnson \email{brett.johnson@hakai.org}
 }
 
 Other contributors:
 \itemize{
   \item Nate Rosenstock \email{nate.rosenstock@hakai.org} [contributor]
-  \item Sam Albers \email{sam.albers@hakai.org} [contributor]
   \item Chris Davis \email{chris.davis@hakai.org} [contributor]
+  \item Hakai Institute [copyright holder]
 }
 
 }

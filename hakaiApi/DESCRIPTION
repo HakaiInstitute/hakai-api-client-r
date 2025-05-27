@@ -1,12 +1,13 @@
 Package: hakaiApi
 Title: Authenticated HTTP Request Client for the 'Hakai' API
-Version: 1.0.2.9000
+Version: 1.0.3
 Authors@R: c(
-    person("Taylor", "Denouden", , "taylor.denouden@hakai.org", role = c("aut", "cre")),
+    person("Sam", "Albers", , "sam.albers@hakai.org", role = c("aut", "cre")),
+    person("Taylor", "Denouden", , "taylor.denouden@hakai.org", role = "aut"),
     person("Brett", "Johnson", , "brett.johnson@hakai.org", role = "aut"),
     person("Nate", "Rosenstock", , "nate.rosenstock@hakai.org", role = "ctb"),
-    person("Sam", "Albers", , "sam.albers@hakai.org", role = "ctb"),
-    person("Chris", "Davis", , "chris.davis@hakai.org", role = "ctb")
+    person("Chris", "Davis", , "chris.davis@hakai.org", role = "ctb"),
+    person("Hakai Institute", , role = "cph")
   )
 Description: Initializes a class that obtains API credentials and provides
     a method to use those credentials to make GET requests to the 'Hakai'

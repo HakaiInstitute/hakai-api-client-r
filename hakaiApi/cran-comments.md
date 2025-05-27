@@ -1,12 +1,12 @@
+## Note
+Maitainer change from: Taylor Denouden to Sam Albers
+
 ## Test environments
-- R-hub windows-x86_64-devel (r-devel)
-- R-hub ubuntu-gcc-release (r-release)
-- R-hub fedora-clang-devel (r-devel)
+* local macOS, R 4.4.3(via R CMD check --as-cran)
+* ubuntu-24.04.2, r: 'release' (github actions)
+* ubuntu-24.04.2, r: 'devel' (github actions)
+* macOS,        r: 'release' (github actions)
+* windows,      r: 'release' (github actions)
 
 ## R CMD check results
-> On windows-x86_64-devel (r-devel)
-  checking for detritus in the temp directory ... NOTE
-  Found the following files/directories:
-    'lastMiKTeXException'
-
-0 errors ✓ | 0 warnings ✓ | 1 note x
+0 errors ✓ | 0 warnings ✓ | 0 note ✓

@@ -53,46 +53,61 @@ client$get(paste0(client$api_root, endpoint, query))
 # Include only GF/F from the surface
 # It may be useful to split up the queries and rejoin them over multiple lines
 # Using the paste() or paste0() functions
-query <- paste("site_id=QU39",
-               "chla_flag=AV",
-               "date.year=2017",
-               "filter_type=GF/F",
-               "line_out_depth=0", sep = "&")
+query <- paste(
+  "site_id=QU39",
+  "chla_flag=AV",
+  "date.year=2017",
+  "filter_type=GF/F",
+  "line_out_depth=0",
+  sep = "&"
+)
 client$get(paste0(client$api_root, endpoint, "?", query))
 
 # Select only the columns I'm interested in
-query <- paste("site_id=QU39",
-               "chla_flag=AV",
-               "date.year=2017",
-               "filter_type=GF/F",
-               "line_out_depth=0",
-               "fields=date,chla,lab_technician", sep = "&")
+query <- paste(
+  "site_id=QU39",
+  "chla_flag=AV",
+  "date.year=2017",
+  "filter_type=GF/F",
+  "line_out_depth=0",
+  "fields=date,chla,lab_technician",
+  sep = "&"
+)
 client$get(paste0(client$api_root, endpoint, "?", query))
 
 # This looks good so now you can assign a variable and remove the limit
-query <- paste("site_id=QU39",
-               "chla_flag=AV",
-               "date.year=2017",
-               "filter_type=GF/F",
-               "line_out_depth=0",
-               "fields=date,chla,lab_technician",
-               "limit=-1", sep = "&")
+query <- paste(
+  "site_id=QU39",
+  "chla_flag=AV",
+  "date.year=2017",
+  "filter_type=GF/F",
+  "line_out_depth=0",
+  "fields=date,chla,lab_technician",
+  "limit=-1",
+  sep = "&"
+)
 a_great_chl_query <- client$get(paste0(client$api_root, endpoint, "?", query))
 
-plot(a_great_chl_query$date,
-     a_great_chl_query$chla,
-     xlim = as.Date(c("2017-01-01", "2018-01-01")),
-     ylim = c(0, 5))
+plot(
+  a_great_chl_query$date,
+  a_great_chl_query$chla,
+  xlim = as.Date(c("2017-01-01", "2018-01-01")),
+  ylim = c(0, 5)
+)
+
 ```
 Let's say you're only interested in receiving the highest 10 values for chlorophyll from 2017 from the portal. We can do
 that with the API as well using the sort descending capability and limiting the return to only 10 values.
 ```{r sort, eval = FALSE}
 endpoint <- "/eims/views/output/chlorophyll"
-query <- paste("fields=date,chla,site_id,line_out_depth",
-               "chla>0",  # Note: added chla>0 to remove NA values
-               "date.year=2017",
-               "sort=-chla",
-               "limit=10", sep = "&")
+query <- paste(
+  "fields=date,chla,site_id,line_out_depth",
+  "chla>0", # Note: added chla>0 to remove NA values
+  "date.year=2017",
+  "sort=-chla",
+  "limit=10",
+  sep = "&"
+)
 top_10_chl <- client$get(paste0(client$api_root, endpoint, "?", query))
 ```
-For more great querying capabilities see [the querying-data docs](https://hakaiinstitute.github.io/hakai-api/querying-data.html)
+For more great querying capabilities see [the querying-data docs](https://hakaiinstitute.github.io/hakai-api/querying_data/)
