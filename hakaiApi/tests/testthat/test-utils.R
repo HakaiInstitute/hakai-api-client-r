@@ -7,7 +7,13 @@ test_that("base_request returns request with default user agent", {
 
   expect_s3_class(req, "httr2_request")
   expect_equal(req$url, "artoo")
-  expect_equal(req$headers$Authorization, "detoo")
+
+  if (utils::packageVersion("httr2") >= "1.1.2.9000") {
+    headers <- httr2::req_get_headers(req, "reveal")
+  } else {
+    headers <- req$headers
+  }
+  expect_equal(headers$Authorization, "detoo")
   expect_equal(req$options$useragent, "hakai-api-client-r")
   
   # Restore previous env var if it existed
@@ -25,7 +31,12 @@ test_that("base_request uses user agent from environment variable", {
 
   expect_s3_class(req, "httr2_request")
   expect_equal(req$url, "artoo")
-  expect_equal(req$headers$Authorization, "detoo")
+  if (utils::packageVersion("httr2") >= "1.1.2.9000") {
+    headers <- httr2::req_get_headers(req, "reveal")
+  } else {
+    headers <- req$headers
+  }
+  expect_equal(headers$Authorization, "detoo")
   expect_equal(req$options$useragent, "custom-test-agent")
   
   # Restore previous env var if it existed
