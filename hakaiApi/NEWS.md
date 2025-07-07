@@ -1,3 +1,8 @@
+# hakaiApi 1.0.3.9000
+
+Bug fixes
+* use redacted headers so that they can't be accidentally saved to disk (thx @hadley in #28)
+
 # hakaiApi 1.0.3
 
 Bug fixes
