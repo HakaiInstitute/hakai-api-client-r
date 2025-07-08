@@ -245,7 +245,6 @@ Client <- R6::R6Class(
       # check if token is provided via environment variable
       env_token <- Sys.getenv("HAKAI_API_TOKEN", unset = NA)
       if (!is.na(env_token) && env_token != "") {
-        message("USING TOKEN!")
         credentials <- private$querystring2df(env_token)
         
         # Add a reasonable expiration time if not present
@@ -253,7 +252,7 @@ Client <- R6::R6Class(
           credentials$expires_at <- as.numeric(Sys.time()) + 86400  # 24 hours from now
         }
         
-        credentials
+        return(credentials)
       }
       
       # If no environment variable, fall back to file-based credentials
@@ -284,7 +283,7 @@ Client <- R6::R6Class(
       )
 
       # If all is well, return the credentials
-      return(credentials)
+      credentials
     },
     save_credentials = function(credentials) {
       # Save the credentials to the self$credentials_file location
