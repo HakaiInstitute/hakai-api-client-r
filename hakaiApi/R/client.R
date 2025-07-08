@@ -1,7 +1,9 @@
 #' The Hakai API Client Class
 #'
 #' @description
-#' Class to use to make authenticated API requests for Hakai data
+#' Class to use to make authenticated API requests for Hakai data.
+#' Credentials can be provided via the HAKAI_API_TOKEN environment variable
+#' or through a credentials file.
 #' @importFrom R6 R6Class
 #' @importFrom httr2 request req_headers req_method req_body_json req_perform
 #' @importFrom readr type_convert
@@ -11,6 +13,12 @@
 #' @examples
 #' \dontrun{
 #' # Initialize a new client
+#' try(
+#'   client <- Client$new()
+#' )
+#'
+#' # Or use environment variable for token
+#' Sys.setenv(HAKAI_API_TOKEN = "token_type=Bearer&access_token=TOKEN")
 #' try(
 #'   client <- Client$new()
 #' )
@@ -50,18 +58,35 @@ Client <- R6::R6Class(
     #' Defaults to "https://hecate.hakai.org/api"
     #' @param login_page Optional API login page url to display to user.
     #' Defaults to "https://hecate.hakai.org/api-client-login"
+    #' @param credentials_file Optional path to the credentials cache file.
+    #' Defaults to "~/.hakai-api-auth-r"
+    #' @details
+    #' Credentials can be provided in two ways:
+    #' 1. Via the HAKAI_API_TOKEN environment variable (contains query string: "token_type=Bearer&access_token=...")
+    #' 2. Via a credentials file (default: ~/.hakai-api-auth-r)
+    #' The environment variable takes precedence if both are available.
     #' @return A client instance
     #' @examples
     #' try(
     #'    client <- Client$new()
     #' )
+    #' # Using environment variable
+    #' Sys.setenv(HAKAI_API_TOKEN = "token_type=Bearer&access_token=TOKEN")
+    #' try(
+    #'    client <- Client$new()
+    #' )
+    #' # Using custom credentials file
+    #' try(
+    #'    client <- Client$new(credentials_file = "/path/to/creds")
+    #' )
     initialize = function(
       api_root = "https://hecate.hakai.org/api",
-      login_page = "https://hecate.hakai.org/api-client-login"
+      login_page = "https://hecate.hakai.org/api-client-login",
+      credentials_file = "~/.hakai-api-auth-r"
     ) {
       self$api_root <- api_root
       private$login_page_url <- login_page
-      private$credentials_file <- path.expand("~/.hakai-api-auth-r")
+      private$credentials_file <- path.expand(credentials_file)
 
       credentials <- private$try_to_load_credentials()
       if (is.list(credentials)) {
@@ -213,6 +238,21 @@ Client <- R6::R6Class(
       return(credentials)
     },
     try_to_load_credentials = function() {
+      # check if token is provided via environment variable
+      env_token <- Sys.getenv("HAKAI_API_TOKEN", unset = NA)
+      if (!is.na(env_token) && env_token != "") {
+        message("USING TOKEN!")
+        credentials <- private$querystring2df(env_token)
+        
+        # Add a reasonable expiration time if not present
+        if (!"expires_at" %in% names(credentials) || is.na(credentials$expires_at)) {
+          credentials$expires_at <- as.numeric(Sys.time()) + 86400  # 24 hours from now
+        }
+        
+        credentials
+      }
+      
+      # If no environment variable, fall back to file-based credentials
       # Check the cached credentials file exists
       if (!file.exists(private$credentials_file)) {
         return(FALSE)
