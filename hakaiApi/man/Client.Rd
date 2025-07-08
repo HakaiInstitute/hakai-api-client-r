@@ -25,11 +25,7 @@ try(
 
 # Retrieve some data. See <https://hakaiinstitute.github.io/hakai-api/> for options.
 try(
-  url <- paste0(client$api_root, "/aco/views/projects?project_year=2020&fields=project_name")
-)
-
-try(
-  projects_2020 <- client$get(url)
+  projects_2020 <- client$get("/aco/views/projects?project_year=2020&fields=project_name")
 )
 
 try(
@@ -66,6 +62,7 @@ try(
 ## Method `Client$get`
 ## ------------------------------------------------
 
+try(client$get("/aco/views/projects"))
 try(client$get("https://hecate.hakai.org/api/aco/views/projects"))
 
 ## ------------------------------------------------
@@ -164,7 +161,7 @@ Send a GET request to the API
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{endpoint_url}}{The full API url to fetch data from}
+\item{\code{endpoint_url}}{The API endpoint url - can be a full URL or a relative path that will be appended to the api_root}
 
 \item{\code{col_types}}{a readr type specification}
 }
@@ -175,7 +172,8 @@ A dataframe of the requested data
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{try(client$get("https://hecate.hakai.org/api/aco/views/projects"))
+\preformatted{try(client$get("/aco/views/projects"))
+try(client$get("https://hecate.hakai.org/api/aco/views/projects"))
 }
 \if{html}{\out{</div>}}
 
@@ -194,7 +192,7 @@ Send a POST request to the API
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{endpoint_url}}{The full API url to fetch data from}
+\item{\code{endpoint_url}}{The API endpoint url - can be a full URL or a relative path that will be appended to the api_root}
 
 \item{\code{rec_data}}{dataframe, list, or other R data structure to send as part of the post request payload}
 }
@@ -216,7 +214,7 @@ Send a PUT request to the API
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{endpoint_url}}{The full API url to fetch data from}
+\item{\code{endpoint_url}}{The API endpoint url - can be a full URL or a relative path that will be appended to the api_root}
 
 \item{\code{rec_data}}{dataframe, list, or other R data structure to send as part of the post request payload}
 }
@@ -238,7 +236,7 @@ Send a PATCH request to the API
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{endpoint_url}}{The full API url to fetch data from}
+\item{\code{endpoint_url}}{The API endpoint url - can be a full URL or a relative path that will be appended to the api_root}
 
 \item{\code{rec_data}}{dataframe, list, or other R data structure to send as part of the post request payload}
 }

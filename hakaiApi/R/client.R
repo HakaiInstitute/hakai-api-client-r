@@ -27,11 +27,7 @@
 #'
 #' # Retrieve some data. See <https://hakaiinstitute.github.io/hakai-api/> for options.
 #' try(
-#'   url <- paste0(client$api_root, "/aco/views/projects?project_year=2020&fields=project_name")
-#' )
-#'
-#' try(
-#'   projects_2020 <- client$get(url)
+#'   projects_2020 <- client$get("/aco/views/projects?project_year=2020&fields=project_name")
 #' )
 #'
 #' try(
@@ -99,17 +95,19 @@ Client <- R6::R6Class(
     },
     #'@description
     #' Send a GET request to the API
-    #' @param endpoint_url The full API url to fetch data from
+    #' @param endpoint_url The API endpoint url - can be a full URL or a relative path that will be appended to the api_root
     #' @param col_types a readr type specification
     #' @return A dataframe of the requested data
     #' @examples
+    #' try(client$get("/aco/views/projects"))
     #' try(client$get("https://hecate.hakai.org/api/aco/views/projects"))
     get = function(endpoint_url, col_types = NULL) {
+      resolved_url <- private$resolve_url(endpoint_url)
       token <- paste(
         private$credentials$token_type,
         private$credentials$access_token
       )
-      r <- base_request(endpoint_url, token) |>
+      r <- base_request(resolved_url, token) |>
         httr2::req_perform()
       data <- httr2::resp_body_json(r)
       data <- private$json2tbl(httr2::resp_body_json(r))
@@ -120,15 +118,16 @@ Client <- R6::R6Class(
 
     #'@description
     #' Send a POST request to the API
-    #' @param endpoint_url The full API url to fetch data from
+    #' @param endpoint_url The API endpoint url - can be a full URL or a relative path that will be appended to the api_root
     #' @param rec_data dataframe, list, or other R data structure to send as part of the post request payload
     #' @return post request response status code and description
     post = function(endpoint_url, rec_data) {
+      resolved_url <- private$resolve_url(endpoint_url)
       token <- paste(
         private$credentials$token_type,
         private$credentials$access_token
       )
-      resp <- base_request(endpoint_url, token) |>
+      resp <- base_request(resolved_url, token) |>
         httr2::req_method("POST") |>
         httr2::req_body_json(rec_data) |>
         httr2::req_perform()
@@ -142,15 +141,16 @@ Client <- R6::R6Class(
 
     #'@description
     #' Send a PUT request to the API
-    #' @param endpoint_url The full API url to fetch data from
+    #' @param endpoint_url The API endpoint url - can be a full URL or a relative path that will be appended to the api_root
     #' @param rec_data dataframe, list, or other R data structure to send as part of the post request payload
     #' @return PUT request response status code and description
     put = function(endpoint_url, rec_data) {
+      resolved_url <- private$resolve_url(endpoint_url)
       token <- paste(
         private$credentials$token_type,
         private$credentials$access_token
       )
-      resp <- base_request(endpoint_url, token) |>
+      resp <- base_request(resolved_url, token) |>
         httr2::req_body_json(data = rec_data, auto_unbox = TRUE) |>
         httr2::req_method("PUT") |>
         httr2::req_perform()
@@ -164,15 +164,16 @@ Client <- R6::R6Class(
 
     #'@description
     #' Send a PATCH request to the API
-    #' @param endpoint_url The full API url to fetch data from
+    #' @param endpoint_url The API endpoint url - can be a full URL or a relative path that will be appended to the api_root
     #' @param rec_data dataframe, list, or other R data structure to send as part of the post request payload
     #' @return PATCH request response status code and description
     patch = function(endpoint_url, rec_data) {
+      resolved_url <- private$resolve_url(endpoint_url)
       token <- paste(
         private$credentials$token_type,
         private$credentials$access_token
       )
-      resp <- base_request(endpoint_url, token) |>
+      resp <- base_request(resolved_url, token) |>
         httr2::req_body_json(data = rec_data, auto_unbox = TRUE) |>
         httr2::req_method("PATCH") |>
         httr2::req_perform()
@@ -202,6 +203,9 @@ Client <- R6::R6Class(
     credentials = NULL,
     json2tbl = function(data) {
       json2tbl_impl(data)
+    },
+    resolve_url = function(endpoint_url) {
+      resolve_url(endpoint_url, self$api_root)
     },
     querystring2df = function(querystring) {
       tryCatch(
