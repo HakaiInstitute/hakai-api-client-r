@@ -1,5 +1,8 @@
 # hakaiApi 1.0.3.9000
 
+Enhancements
+* Can now use relative urls once client has been initialized (#27)
+
 Bug fixes
 * use redacted headers so that they can't be accidentally saved to disk (thx @hadley in #28)
 
