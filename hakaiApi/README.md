@@ -24,10 +24,10 @@ remotes::install_github("HakaiInstitute/hakai-api-client-r", subdir='hakaiApi')
 
 ```r
 # Initialize the client
-client <- hakaiApi::Client$new()
+client <- hakaiApi::Client$new("https://hecate.hakai.org")
 
 # Request some data (request chlorophyll data here)
-data <- client$get("https://hecate.hakai.org/api/eims/views/output/chlorophyll?limit=50")
+data <- client$get("api/eims/views/output/chlorophyll?limit=50")
 
 # View out the data
 View(data)
