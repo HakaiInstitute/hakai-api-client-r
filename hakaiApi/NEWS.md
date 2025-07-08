@@ -1,6 +1,8 @@
 # hakaiApi 1.0.3.9000
 
 Enhancements
+
+* the crendentials path is now configurable and environment variables can also be used for tokens (#25)
 * Can now use relative urls once client has been initialized (#27)
 
 Bug fixes

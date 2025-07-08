@@ -4,11 +4,19 @@
 \alias{Client}
 \title{The Hakai API Client Class}
 \description{
-Class to use to make authenticated API requests for Hakai data
+Class to use to make authenticated API requests for Hakai data.
+Credentials can be provided via the HAKAI_API_TOKEN environment variable
+or through a credentials file.
 }
 \examples{
 \dontrun{
 # Initialize a new client
+try(
+  client <- Client$new()
+)
+
+# Or use environment variable for token
+Sys.setenv(HAKAI_API_TOKEN = "token_type=Bearer&access_token=TOKEN")
 try(
   client <- Client$new()
 )
@@ -39,6 +47,15 @@ try(
 
 try(
    client <- Client$new()
+)
+# Using environment variable
+Sys.setenv(HAKAI_API_TOKEN = "token_type=Bearer&access_token=TOKEN")
+try(
+   client <- Client$new()
+)
+# Using custom credentials file
+try(
+   client <- Client$new(credentials_file = "/path/to/creds")
 )
 
 ## ------------------------------------------------
@@ -83,7 +100,8 @@ Log into Google to gain credential access to the API
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Client$new(
   api_root = "https://hecate.hakai.org/api",
-  login_page = "https://hecate.hakai.org/api-client-login"
+  login_page = "https://hecate.hakai.org/api-client-login",
+  credentials_file = "~/.hakai-api-auth-r"
 )}\if{html}{\out{</div>}}
 }
 
@@ -95,9 +113,19 @@ Defaults to "https://hecate.hakai.org/api"}
 
 \item{\code{login_page}}{Optional API login page url to display to user.
 Defaults to "https://hecate.hakai.org/api-client-login"}
+
+\item{\code{credentials_file}}{Optional path to the credentials cache file.
+Defaults to "~/.hakai-api-auth-r"}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Details}{
+Credentials can be provided in two ways:
+1. Via the HAKAI_API_TOKEN environment variable (contains query string: "token_type=Bearer&access_token=...")
+2. Via a credentials file (default: ~/.hakai-api-auth-r)
+The environment variable takes precedence if both are available.
+}
+
 \subsection{Returns}{
 A client instance
 }
@@ -105,6 +133,15 @@ A client instance
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{try(
    client <- Client$new()
+)
+# Using environment variable
+Sys.setenv(HAKAI_API_TOKEN = "token_type=Bearer&access_token=TOKEN")
+try(
+   client <- Client$new()
+)
+# Using custom credentials file
+try(
+   client <- Client$new(credentials_file = "/path/to/creds")
 )
 }
 \if{html}{\out{</div>}}
