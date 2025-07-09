@@ -1,4 +1,4 @@
-# hakaiApi 1.0.3.9000
+# hakaiApi 1.0.4
 
 Enhancements
 

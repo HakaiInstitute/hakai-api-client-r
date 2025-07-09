@@ -1,6 +1,6 @@
 Package: hakaiApi
 Title: Authenticated HTTP Request Client for the 'Hakai' API
-Version: 1.0.3.9000
+Version: 1.0.4
 Authors@R: c(
     person("Sam", "Albers", , "sam.albers@hakai.org", role = c("aut", "cre")),
     person("Taylor", "Denouden", , "taylor.denouden@hakai.org", role = "aut"),
