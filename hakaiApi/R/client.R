@@ -246,15 +246,20 @@ Client <- R6::R6Class(
       env_token <- Sys.getenv("HAKAI_API_TOKEN", unset = NA)
       if (!is.na(env_token) && env_token != "") {
         credentials <- private$querystring2df(env_token)
-        
-        # Add a reasonable expiration time if not present
-        if (!"expires_at" %in% names(credentials) || is.na(credentials$expires_at)) {
-          credentials$expires_at <- as.numeric(Sys.time()) + 86400  # 24 hours from now
+
+        if (are_credentials_expired(credentials)) {
+          stop(
+            paste0(
+              "HAKAI_API_TOKEN is expired. Please generate a new token at ",
+              self$api_root
+            ),
+            call. = FALSE
+          )
         }
-        
+
         return(credentials)
       }
-      
+
       # If no environment variable, fall back to file-based credentials
       # Check the cached credentials file exists
       if (!file.exists(private$credentials_file)) {
@@ -269,7 +274,7 @@ Client <- R6::R6Class(
           close(credentials_file)
 
           # Check that credentials aren't expired
-          if (as.numeric(Sys.time()) > credentials$expires_at) {
+          if (are_credentials_expired(credentials)) {
             self$remove_credentials()
             credentials <- FALSE
           }
