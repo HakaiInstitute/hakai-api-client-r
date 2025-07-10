@@ -1,3 +1,8 @@
+# hakaiApi 1.0.5
+
+* CRAN fix: Moved credential storage to proper user directories and added permission prompts to comply with CRAN policies.
+* Fixed typos in auth prompts and added test coverage for environment variable handling.
+
 # hakaiApi 1.0.4
 
 Enhancements
