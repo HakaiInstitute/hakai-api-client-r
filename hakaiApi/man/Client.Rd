@@ -101,7 +101,7 @@ Log into Google to gain credential access to the API
 \if{html}{\out{<div class="r">}}\preformatted{Client$new(
   api_root = "https://hecate.hakai.org/api",
   login_page = "https://hecate.hakai.org/api-client-login",
-  credentials_file = "~/.hakai-api-auth-r"
+  credentials_file = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -115,14 +115,14 @@ Defaults to "https://hecate.hakai.org/api"}
 Defaults to "https://hecate.hakai.org/api-client-login"}
 
 \item{\code{credentials_file}}{Optional path to the credentials cache file.
-Defaults to "~/.hakai-api-auth-r"}
+Defaults to a file in the user's data directory as determined by tools::R_user_dir()}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Details}{
 Credentials can be provided in two ways:
 1. Via the HAKAI_API_TOKEN environment variable (contains query string: "token_type=Bearer&access_token=...")
-2. Via a credentials file (default: ~/.hakai-api-auth-r)
+2. Via a credentials file (default: in user data directory via tools::R_user_dir())
 The environment variable takes precedence if both are available.
 }
 

@@ -7,8 +7,6 @@
 #' @importFrom R6 R6Class
 #' @importFrom httr2 request req_headers req_method req_body_json req_perform
 #' @importFrom readr type_convert
-#' @importFrom tibble as_tibble
-#' @importFrom dplyr bind_rows
 #' @export
 #' @examples
 #' \dontrun{
@@ -55,11 +53,11 @@ Client <- R6::R6Class(
     #' @param login_page Optional API login page url to display to user.
     #' Defaults to "https://hecate.hakai.org/api-client-login"
     #' @param credentials_file Optional path to the credentials cache file.
-    #' Defaults to "~/.hakai-api-auth-r"
+    #' Defaults to a file in the user's data directory as determined by tools::R_user_dir()
     #' @details
     #' Credentials can be provided in two ways:
     #' 1. Via the HAKAI_API_TOKEN environment variable (contains query string: "token_type=Bearer&access_token=...")
-    #' 2. Via a credentials file (default: ~/.hakai-api-auth-r)
+    #' 2. Via a credentials file (default: in user data directory via tools::R_user_dir())
     #' The environment variable takes precedence if both are available.
     #' @return A client instance
     #' @examples
@@ -78,11 +76,18 @@ Client <- R6::R6Class(
     initialize = function(
       api_root = "https://hecate.hakai.org/api",
       login_page = "https://hecate.hakai.org/api-client-login",
-      credentials_file = "~/.hakai-api-auth-r"
+      credentials_file = NULL
     ) {
       self$api_root <- api_root
       private$login_page_url <- login_page
-      private$credentials_file <- path.expand(credentials_file)
+
+      # Set default credentials file location using R_user_dir
+      if (is.null(credentials_file)) {
+        user_dir <- tools::R_user_dir("hakaiApi", "data")
+        private$credentials_file <- file.path(user_dir, ".hakai-api-auth-r")
+      } else {
+        private$credentials_file <- path.expand(credentials_file)
+      }
 
       credentials <- private$try_to_load_credentials()
       if (is.list(credentials)) {
@@ -230,13 +235,32 @@ Client <- R6::R6Class(
       )
     },
     get_credentials_from_web = function() {
+      # Ask for permission to store credentials before getting them
+      if (interactive()) {
+        message(
+          "hakaiApi would like to store credentials in: ",
+          private$credentials_file
+        )
+        choice <- utils::menu(
+          c("Yes", "No"),
+          title = "Store credentials file?"
+        )
+        if (choice != 1) {
+          stop(
+            "Permission denied to store credentials file. ",
+            "Alternative: Set environment variable HAKAI_API_TOKEN with your credentials.",
+            call. = FALSE
+          )
+        }
+      }
+
       # Get the user to login and get the oAuth2 code from the redirect url
       writeLines("Please go here and authorize:")
       writeLines(private$login_page_url)
       writeLines("")
 
       querystring <- readline(
-        "Copy and past your credentials from the login page:\n"
+        "Copy and paste the full credential string from the login page:\n"
       )
       credentials <- private$querystring2df(querystring)
       return(credentials)
@@ -246,17 +270,23 @@ Client <- R6::R6Class(
       env_token <- Sys.getenv("HAKAI_API_TOKEN", unset = NA)
       if (!is.na(env_token) && env_token != "") {
         credentials <- private$querystring2df(env_token)
-        
-        # Add a reasonable expiration time if not present
-        if (!"expires_at" %in% names(credentials) || is.na(credentials$expires_at)) {
-          credentials$expires_at <- as.numeric(Sys.time()) + 86400  # 24 hours from now
+
+        if (are_credentials_expired(credentials)) {
+          stop(
+            paste0(
+              "HAKAI_API_TOKEN is expired. Please generate a new token at ",
+              self$api_root
+            ),
+            call. = FALSE
+          )
         }
-        
+
         return(credentials)
       }
-      
+
       # If no environment variable, fall back to file-based credentials
       # Check the cached credentials file exists
+      message(private$credentials_file)
       if (!file.exists(private$credentials_file)) {
         return(FALSE)
       }
@@ -269,7 +299,7 @@ Client <- R6::R6Class(
           close(credentials_file)
 
           # Check that credentials aren't expired
-          if (as.numeric(Sys.time()) > credentials$expires_at) {
+          if (are_credentials_expired(credentials)) {
             self$remove_credentials()
             credentials <- FALSE
           }
@@ -286,6 +316,12 @@ Client <- R6::R6Class(
       credentials
     },
     save_credentials = function(credentials) {
+      # Ensure the directory exists before saving
+      cred_dir <- dirname(private$credentials_file)
+      if (!dir.exists(cred_dir)) {
+        dir.create(cred_dir, recursive = TRUE)
+      }
+
       # Save the credentials to the self$credentials_file location
       credentials_file <- file(private$credentials_file, "w")
       serialize(credentials, credentials_file)
