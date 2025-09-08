@@ -1,3 +1,6 @@
+# hakaiApi 1.0.5.9000
+* ADd `get_stations()` method to retrieve list of stations as an sf object
+
 # hakaiApi 1.0.5
 
 * CRAN fix: Moved credential storage to proper user directories and added permission prompts to comply with CRAN policies.
