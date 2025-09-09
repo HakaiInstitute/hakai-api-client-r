@@ -1,3 +1,6 @@
+A good set of steps to follow before releasing the package to CRAN:
+
+```r
 install.packages("usethis", repos = "https://cloud.r-project.org/")
 install.packages("devtools", repos = "https://cloud.r-project.org/")
 install.packages("roxygen2", repos = "https://cloud.r-project.org/")
@@ -54,3 +57,4 @@ devtools::check()
 # Release the package to CRAN
 devtools::release_checks()
 # devtools::release()
+```
