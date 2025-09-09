@@ -14,7 +14,7 @@ Description: Initializes a class that obtains API credentials and provides
     API server. Usage instructions are documented at
     <https://hakaiinstitute.github.io/hakai-api/>.
 License: MIT + file LICENSE
-URL: https://github.com/HakaiInstitute/hakai-api-client-r
+URL: https://github.com/HakaiInstitute/hakai-api-client-r, https://hakaiinstitute.github.io/hakai-api-client-r/
 BugReports: https://github.com/HakaiInstitute/hakai-api-client-r/issues
 Depends:
     R (>= 4.2.0)

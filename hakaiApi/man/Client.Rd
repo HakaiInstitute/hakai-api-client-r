@@ -66,6 +66,12 @@ try(client$get("/aco/views/projects"))
 try(client$get("https://hecate.hakai.org/api/aco/views/projects"))
 
 ## ------------------------------------------------
+## Method `Client$get_stations`
+## ------------------------------------------------
+
+try(client$get_stations())
+
+## ------------------------------------------------
 ## Method `Client$remove_credentials`
 ## ------------------------------------------------
 
@@ -85,6 +91,7 @@ try(
 \itemize{
 \item \href{#method-Client-new}{\code{Client$new()}}
 \item \href{#method-Client-get}{\code{Client$get()}}
+\item \href{#method-Client-get_stations}{\code{Client$get_stations()}}
 \item \href{#method-Client-post}{\code{Client$post()}}
 \item \href{#method-Client-put}{\code{Client$put()}}
 \item \href{#method-Client-patch}{\code{Client$patch()}}
@@ -174,6 +181,27 @@ A dataframe of the requested data
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{try(client$get("/aco/views/projects"))
 try(client$get("https://hecate.hakai.org/api/aco/views/projects"))
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Client-get_stations"></a>}}
+\if{latex}{\out{\hypertarget{method-Client-get_stations}{}}}
+\subsection{Method \code{get_stations()}}{
+Get recent sensor nodes and their locations as an sf object
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Client$get_stations()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+An sf object of sensor nodes and their locations
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{try(client$get_stations())
 }
 \if{html}{\out{</div>}}
 
