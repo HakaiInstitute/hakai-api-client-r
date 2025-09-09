@@ -1,0 +1,58 @@
+---
+title: "Viewing Recent Stations"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+One of the endpoints accessed by the `hakaiApi` package is the stations endpoint. This endpoint provides metadata about stations, including their geographic coordinates. This information can be useful for visualizing the locations of stations on a map. In R we can either make static maps using `ggplot2` or interactive maps using `mapview` to quickly visualize the locations of stations. We need to install the `bcmaps` package to get a base map of British Columbia as well as the `sf` package to handle spatial data and the `ggplot2` and `mapview` packages for visualization.
+
+```{r setup}
+library(hakaiApi)
+library(ggplot2)
+library(mapview)
+library(bcmaps)
+library(sf)
+```
+
+We first need to access the stations endpoint using the `Client` class from the `hakaiApi` package. We can then use the `get_stations` method to retrieve a data frame of stations. If you don't have the sf package installed you will prompted to install that at this point.
+
+```{r get-data}
+#| eval: FALSE
+hakai_client <- hakaiApi::Client$new("https://hecate.hakai.org/api")
+stations <- hakai_client$get_stations()
+```
+
+```{r get-data-actually}
+#| echo: FALSE
+stations <- readRDS("../../data-raw/stations.rds")
+```
+
+Because we want to plot the stations and some sensible basemap, we need to created a clipped polygon of British Columbia that contains all the stations. We can do this by creating a bounding box around the stations and then using the `st_intersection` function from the `sf` package to clip the BC polygon to that bounding box. 
+```{r interaction}
+#| warning=FALSE
+bc <- bcmaps::bc_bound_hres()
+
+points_bbox <- st_bbox(stations) |> 
+  st_as_sfc() |> 
+  st_transform(st_crs(bc))
+clipped_polygon <- st_intersection(bc, points_bbox)
+```
+
+Once we have the clipped polygon, we can plot the stations on top of it using `ggplot2` or `mapview`. Here is an example of a static map using `ggplot2`:
+```{r ggplot2}
+ggplot() +
+  geom_sf(data = clipped_polygon) +
+  geom_sf(data = stations, aes(color = station_id), size = 3) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+And here is an example of an interactive map using `mapview`:
+```{r mapview, message=FALSE}
+mapview::mapview(stations)
+```
