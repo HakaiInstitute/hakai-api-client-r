@@ -38,9 +38,10 @@ jobs:
         with:
           extra-packages: any::pkgdown, local::.
           needs: website
+          working-directory: hakaiApi
 
       - name: Build site
-        run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
+        run: pkgdown::build_site_github_pages("/hakaiApi", new_process = FALSE, install = FALSE)
         shell: Rscript {0}
 
       - name: Deploy to GitHub pages 🚀
@@ -49,4 +50,4 @@ jobs:
         with:
           clean: false
           branch: gh-pages
-          folder: docs
+          folder: /hakaiApi/docs
