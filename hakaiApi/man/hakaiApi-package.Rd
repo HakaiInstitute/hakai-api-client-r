@@ -12,6 +12,7 @@ Initializes a class that obtains API credentials and provides a method to use th
 Useful links:
 \itemize{
   \item \url{https://github.com/HakaiInstitute/hakai-api-client-r}
+  \item \url{https://hakaiinstitute.github.io/hakai-api-client-r/}
   \item Report bugs at \url{https://github.com/HakaiInstitute/hakai-api-client-r/issues}
 }
 
