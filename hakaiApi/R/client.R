@@ -142,7 +142,7 @@ Client <- R6::R6Class(
         httr2::req_perform()
       data <- httr2::resp_body_string(r)
       temp_file <- tempfile(fileext = ".geojson")
-      writeLines(foo, temp_file)
+      writeLines(data, temp_file)
 
       stations <- sf::read_sf(temp_file, quiet = TRUE)
       on.exit(unlink(temp_file))
