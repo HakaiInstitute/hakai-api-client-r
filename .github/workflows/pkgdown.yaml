@@ -15,11 +15,14 @@ permissions: read-all
 jobs:
   pkgdown:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: hakaiApi
     # Only restrict concurrency for non-PR jobs
     concurrency:
       group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
     env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_PAT: ${{ secrets.CI_TOKEN }}
     permissions:
       contents: write
     steps:
