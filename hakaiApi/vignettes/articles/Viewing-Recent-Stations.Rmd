@@ -22,8 +22,14 @@ library(sf)
 We first need to access the stations endpoint using the `Client` class from the `hakaiApi` package. We can then use the `get_stations` method to retrieve a data frame of stations. If you don't have the sf package installed you will prompted to install that at this point.
 
 ```{r get-data}
+#| eval: FALSE
 hakai_client <- hakaiApi::Client$new("https://hecate.hakai.org/api")
 stations <- hakai_client$get_stations()
+```
+
+```{r get-data-actually}
+#| echo: FALSE
+stations <- readRDS("data-raw/stations.rds")
 ```
 
 Because we want to plot the stations and some sensible basemap, we need to created a clipped polygon of British Columbia that contains all the stations. We can do this by creating a bounding box around the stations and then using the `st_intersection` function from the `sf` package to clip the BC polygon to that bounding box. 
