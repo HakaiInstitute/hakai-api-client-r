@@ -120,6 +120,34 @@ Client <- R6::R6Class(
       data <- readr::type_convert(data, col_types = col_types)
       return(data)
     },
+    #' @description
+    #' Get recent sensor nodes and their locations as an sf object
+    #' @return An sf object of sensor nodes and their locations
+    #' @examples
+    #' try(client$get_stations())
+    get_stations = function() {
+      if (!requireNamespace("sf", quietly = TRUE)) {
+        stop(
+          "Package 'sf' is required. Install with: install.packages('sf')",
+          call. = FALSE
+        )
+      }
+      endpoint_url = "sn/recent_stations.geojson"
+      resolved_url <- private$resolve_url(endpoint_url)
+      token <- paste(
+        private$credentials$token_type,
+        private$credentials$access_token
+      )
+      r <- base_request(resolved_url, token) |>
+        httr2::req_perform()
+      data <- httr2::resp_body_string(r)
+      temp_file <- tempfile(fileext = ".geojson")
+      writeLines(data, temp_file)
+
+      stations <- sf::read_sf(temp_file, quiet = TRUE)
+      on.exit(unlink(temp_file))
+      stations[, c("station_id", "sensor_node", "geometry")]
+    },
 
     #'@description
     #' Send a POST request to the API
