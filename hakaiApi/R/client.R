@@ -49,9 +49,9 @@ Client <- R6::R6Class(
     #' @description
     #' Log into Google to gain credential access to the API
     #' @param api_root Optional API base url to fetch data.
-    #' Defaults to "https://hecate.hakai.org/api"
+    #' Defaults to "https://portal.hakai.org/api"
     #' @param login_page Optional API login page url to display to user.
-    #' Defaults to "https://hecate.hakai.org/api-client-login"
+    #' Defaults to "https://portal.hakai.org/api-client-login"
     #' @param credentials_file Optional path to the credentials cache file.
     #' Defaults to a file in the user's data directory as determined by tools::R_user_dir()
     #' @details
@@ -74,8 +74,8 @@ Client <- R6::R6Class(
     #'    client <- Client$new(credentials_file = "/path/to/creds")
     #' )
     initialize = function(
-      api_root = "https://hecate.hakai.org/api",
-      login_page = "https://hecate.hakai.org/api-client-login",
+      api_root = "https://portal.hakai.org/api",
+      login_page = "https://portal.hakai.org/api-client-login",
       credentials_file = NULL
     ) {
       self$api_root <- api_root
@@ -105,7 +105,7 @@ Client <- R6::R6Class(
     #' @return A dataframe of the requested data
     #' @examples
     #' try(client$get("/aco/views/projects"))
-    #' try(client$get("https://hecate.hakai.org/api/aco/views/projects"))
+    #' try(client$get("https://portal.hakai.org/api/aco/views/projects"))
     get = function(endpoint_url, col_types = NULL) {
       resolved_url <- private$resolve_url(endpoint_url)
       token <- paste(
