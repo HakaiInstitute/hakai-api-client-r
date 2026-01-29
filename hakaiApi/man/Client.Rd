@@ -63,7 +63,7 @@ try(
 ## ------------------------------------------------
 
 try(client$get("/aco/views/projects"))
-try(client$get("https://hecate.hakai.org/api/aco/views/projects"))
+try(client$get("https://portal.hakai.org/api/aco/views/projects"))
 
 ## ------------------------------------------------
 ## Method `Client$get_stations`
@@ -106,8 +106,8 @@ try(
 Log into Google to gain credential access to the API
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Client$new(
-  api_root = "https://hecate.hakai.org/api",
-  login_page = "https://hecate.hakai.org/api-client-login",
+  api_root = "https://portal.hakai.org/api",
+  login_page = "https://portal.hakai.org/api-client-login",
   credentials_file = NULL
 )}\if{html}{\out{</div>}}
 }
@@ -116,10 +116,10 @@ Log into Google to gain credential access to the API
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{api_root}}{Optional API base url to fetch data.
-Defaults to "https://hecate.hakai.org/api"}
+Defaults to "https://portal.hakai.org/api"}
 
 \item{\code{login_page}}{Optional API login page url to display to user.
-Defaults to "https://hecate.hakai.org/api-client-login"}
+Defaults to "https://portal.hakai.org/api-client-login"}
 
 \item{\code{credentials_file}}{Optional path to the credentials cache file.
 Defaults to a file in the user's data directory as determined by tools::R_user_dir()}
@@ -180,7 +180,7 @@ A dataframe of the requested data
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{try(client$get("/aco/views/projects"))
-try(client$get("https://hecate.hakai.org/api/aco/views/projects"))
+try(client$get("https://portal.hakai.org/api/aco/views/projects"))
 }
 \if{html}{\out{</div>}}
 
