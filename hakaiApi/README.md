@@ -24,7 +24,7 @@ remotes::install_github("HakaiInstitute/hakai-api-client-r", subdir='hakaiApi')
 
 ```r
 # Initialize the client
-client <- hakaiApi::Client$new("https://hecate.hakai.org")
+client <- hakaiApi::Client$new("https://portal.hakai.org")
 
 # Request some data (request chlorophyll data here)
 data <- client$get("api/eims/views/output/chlorophyll?limit=50")
@@ -47,7 +47,7 @@ For details about the API, including available endpoints where data can be reque
 
 ## Advanced usage
 
-You can specify which API to access when instantiating the Client. By default, the API uses `https://hecate.hakai.org/api` as the API root. It may be useful to use this library to access a locally running API instance or to access the Goose API for testing purposes.
+You can specify which API to access when instantiating the Client. By default, the API uses `https://portal.hakai.org/api` as the API root. It may be useful to use this library to access a locally running API instance or to access the Goose API for testing purposes.
 
 ```r
 # Get a client for a locally running API instance

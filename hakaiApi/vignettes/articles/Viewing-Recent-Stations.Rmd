@@ -23,7 +23,7 @@ We first need to access the stations endpoint using the `Client` class from the 
 
 ```{r get-data}
 #| eval: FALSE
-hakai_client <- hakaiApi::Client$new("https://hecate.hakai.org/api")
+hakai_client <- hakaiApi::Client$new("https://portal.hakai.org/api")
 stations <- hakai_client$get_stations()
 ```
 
