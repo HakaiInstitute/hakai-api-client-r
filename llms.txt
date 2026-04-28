@@ -16,16 +16,17 @@ authentication process.
 
 ## Installation
 
-Before using this library, install it into your environment using one of
-the following in your R script:
+You can install hakaiApi from CRAN:
 
 ``` r
-# From CRAN
 install.packages("hakaiApi")
+```
 
-# OR, the latest version from GitHub
-install.packages("remotes")
-remotes::install_github("HakaiInstitute/hakai-api-client-r", subdir='hakaiApi')
+Or install the latest version from the Hakai Institute r-universe
+server:
+
+``` r
+install.packages("hakaiApi", repos = "https://hakaiinstitute.r-universe.dev")
 ```
 
 ## Quickstart

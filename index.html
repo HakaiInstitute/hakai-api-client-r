@@ -18,7 +18,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="index.html">hakaiApi</a>
 
@@ -49,6 +49,9 @@
       </ul>
 </div>
 
+    <a href="https://www.hakai.org" target="_blank" rel="noopener" class="external-link ms-2">
+      <img src="hakai.png" alt="Hakai Institute" height="28"></a>
+
 
   </div>
 </nav><div class="container template-home">
@@ -61,19 +64,17 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>Before using this library, install it into your environment using one of the following in your R script:</p>
+<p>You can install hakaiApi from CRAN:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># From CRAN</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"hakaiApi"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># OR, the latest version from GitHub</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"HakaiInstitute/hakai-api-client-r"</span>, subdir<span class="op">=</span><span class="st">'hakaiApi'</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"hakaiApi"</span><span class="op">)</span></span></code></pre></div>
+<p>Or install the latest version from the Hakai Institute r-universe server:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"hakaiApi"</span>, repos <span class="op">=</span> <span class="st">"https://hakaiinstitute.r-universe.dev"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="quickstart">Quickstart<a class="anchor" aria-label="anchor" href="#quickstart"></a>
 </h2>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Initialize the client</span></span>
 <span><span class="va">client</span> <span class="op">&lt;-</span> <span class="fu">hakaiApi</span><span class="fu">::</span><span class="va"><a href="reference/Client.html">Client</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"https://portal.hakai.org"</span><span class="op">)</span></span>
 <span></span>
@@ -99,7 +100,7 @@
 <h2 id="advanced-usage">Advanced usage<a class="anchor" aria-label="anchor" href="#advanced-usage"></a>
 </h2>
 <p>You can specify which API to access when instantiating the Client. By default, the API uses <code>https://portal.hakai.org/api</code> as the API root. It may be useful to use this library to access a locally running API instance or to access the Goose API for testing purposes.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get a client for a locally running API instance</span></span>
 <span><span class="va">client</span> <span class="op">&lt;-</span> <span class="fu">hakaiApi</span><span class="fu">::</span><span class="va"><a href="reference/Client.html">Client</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"localhost:8666"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">client</span><span class="op">$</span><span class="va">api_root</span><span class="op">)</span> <span class="co"># http://localhost:8666</span></span></code></pre></div>
