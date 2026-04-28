@@ -1,3 +1,4 @@
 .idea/
 .Rproj.user
-*.html
+hakaiApi/docs/*.html
+!hakaiApi/pkgdown/templates/navbar.html
