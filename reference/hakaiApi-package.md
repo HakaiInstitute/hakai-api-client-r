@@ -22,6 +22,8 @@ Useful links:
 
 Authors:
 
+- Sam Albers <sam.albers@hakai.org>
+
 - Taylor Denouden <taylor.denouden@hakai.org>
 
 - Brett Johnson <brett.johnson@hakai.org>

@@ -14,7 +14,7 @@ or through a credentials file.
 
 ### Public methods
 
-- [`Client$new()`](#method-Client-new)
+- [`Client$new()`](#method-Client-initialize)
 
 - [`Client$get()`](#method-Client-get)
 
@@ -32,7 +32,7 @@ or through a credentials file.
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `Client$new()`
 
 Log into Google to gain credential access to the API
 
@@ -40,7 +40,7 @@ Log into Google to gain credential access to the API
 
     Client$new(
       api_root = "https://portal.hakai.org/api",
-      login_page = "https://portal.hakai.org/api-client-login",
+      login_page = NULL,
       credentials_file = NULL
     )
 
@@ -53,8 +53,9 @@ Log into Google to gain credential access to the API
 
 - `login_page`:
 
-  Optional API login page url to display to user. Defaults to
-  "https://portal.hakai.org/api-client-login"
+  Optional API login page url to display to user. When NULL (the
+  default) it is derived from the api_root host, so a custom api_root
+  authenticates against the matching server.
 
 - `credentials_file`:
 
@@ -90,13 +91,13 @@ A client instance
 
 ------------------------------------------------------------------------
 
-### Method [`get()`](https://rdrr.io/r/base/get.html)
+### `Client$get()`
 
 Send a GET request to the API
 
 #### Usage
 
-    Client$get(endpoint_url, col_types = NULL)
+    Client$get(endpoint_url, col_types = NULL, verbose = FALSE)
 
 #### Arguments
 
@@ -109,6 +110,11 @@ Send a GET request to the API
 
   a readr type specification
 
+- `verbose`:
+
+  When TRUE, print the request and response details (including the
+  resolved url) to aid debugging
+
 #### Returns
 
 A dataframe of the requested data
@@ -117,16 +123,24 @@ A dataframe of the requested data
 
     try(client$get("/aco/views/projects"))
     try(client$get("https://portal.hakai.org/api/aco/views/projects"))
+    try(client$get("/aco/views/projects", verbose = TRUE))
 
 ------------------------------------------------------------------------
 
-### Method `get_stations()`
+### `Client$get_stations()`
 
 Get recent sensor nodes and their locations as an sf object
 
 #### Usage
 
-    Client$get_stations()
+    Client$get_stations(verbose = FALSE)
+
+#### Arguments
+
+- `verbose`:
+
+  When TRUE, print the request and response details (including the
+  resolved url) to aid debugging
 
 #### Returns
 
@@ -138,13 +152,13 @@ An sf object of sensor nodes and their locations
 
 ------------------------------------------------------------------------
 
-### Method `post()`
+### `Client$post()`
 
 Send a POST request to the API
 
 #### Usage
 
-    Client$post(endpoint_url, rec_data)
+    Client$post(endpoint_url, rec_data, verbose = FALSE)
 
 #### Arguments
 
@@ -157,6 +171,11 @@ Send a POST request to the API
 
   dataframe, list, or other R data structure to send as part of the post
   request payload
+
+- `verbose`:
+
+  When TRUE, print the request and response details (including the
+  resolved url) to aid debugging
 
 #### Returns
 
@@ -164,13 +183,13 @@ post request response status code and description
 
 ------------------------------------------------------------------------
 
-### Method `put()`
+### `Client$put()`
 
 Send a PUT request to the API
 
 #### Usage
 
-    Client$put(endpoint_url, rec_data)
+    Client$put(endpoint_url, rec_data, verbose = FALSE)
 
 #### Arguments
 
@@ -183,6 +202,11 @@ Send a PUT request to the API
 
   dataframe, list, or other R data structure to send as part of the post
   request payload
+
+- `verbose`:
+
+  When TRUE, print the request and response details (including the
+  resolved url) to aid debugging
 
 #### Returns
 
@@ -190,13 +214,13 @@ PUT request response status code and description
 
 ------------------------------------------------------------------------
 
-### Method `patch()`
+### `Client$patch()`
 
 Send a PATCH request to the API
 
 #### Usage
 
-    Client$patch(endpoint_url, rec_data)
+    Client$patch(endpoint_url, rec_data, verbose = FALSE)
 
 #### Arguments
 
@@ -210,13 +234,18 @@ Send a PATCH request to the API
   dataframe, list, or other R data structure to send as part of the post
   request payload
 
+- `verbose`:
+
+  When TRUE, print the request and response details (including the
+  resolved url) to aid debugging
+
 #### Returns
 
 PATCH request response status code and description
 
 ------------------------------------------------------------------------
 
-### Method `remove_credentials()`
+### `Client$remove_credentials()`
 
 Remove your cached login credentials to logout of the client
 
@@ -232,7 +261,7 @@ Remove your cached login credentials to logout of the client
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `Client$clone()`
 
 The objects of this class are cloneable with this method.
 
@@ -282,7 +311,7 @@ try(
 } # }
 
 ## ------------------------------------------------
-## Method `Client$new`
+## Method `Client$new()`
 ## ------------------------------------------------
 
 try(
@@ -310,27 +339,45 @@ try(
 #>   argument is of length zero
 
 ## ------------------------------------------------
-## Method `Client$get`
+## Method `Client$get()`
 ## ------------------------------------------------
 
 try(client$get("/aco/views/projects"))
-#> Error in httr2::req_perform(base_request(resolved_url, token)) : 
+#> Error in httr2::req_perform(base_request(resolved_url, token), verbosity = private$verbosity(verbose)) : 
 #>   HTTP 401 Unauthorized.
 try(client$get("https://portal.hakai.org/api/aco/views/projects"))
-#> Error in httr2::req_perform(base_request(resolved_url, token)) : 
+#> Error in httr2::req_perform(base_request(resolved_url, token), verbosity = private$verbosity(verbose)) : 
+#>   HTTP 401 Unauthorized.
+try(client$get("/aco/views/projects", verbose = TRUE))
+#> -> GET /api/aco/views/projects HTTP/2
+#> -> Host: portal.hakai.org
+#> -> User-Agent: hakai-api-client-r
+#> -> Accept: */*
+#> -> Accept-Encoding: deflate, gzip, br, zstd
+#> -> Authorization: <REDACTED>
+#> -> 
+#> <- HTTP/2 401 
+#> <- server: nginx
+#> <- date: Wed, 14 Oct 2026 21:09:03 GMT
+#> <- content-type: application/json; charset=utf-8
+#> <- vary: Origin, Accept-Encoding
+#> <- content-encoding: br
+#> <- 
+#> << {"message":"Authorization header not set","name":"UnauthorizedError","stack":"UnauthorizedError: Authorization header not set\n    at Object.throw (/app/node_modules/koa/lib/context.js:96:11)\n    at /app/src/middlewares/auth.js:44:32\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)\n    at /app/node_modules/koa-router/lib/router.js:372:16\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)\n    at allowedMethods (/app/node_modules/koa-router/lib/router.js:433:12)\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)\n    at /app/node_modules/koa-router/lib/router.js:372:16\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)\n    at allowedMethods (/app/node_modules/koa-router/lib/router.js:433:12)\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)\n    at /app/node_modules/koa-router/lib/router.js:372:16\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)\n    at allowedMethods (/app/node_modules/koa-router/lib/router.js:433:12)\n    at dispatch (/app/node_modules/koa-compose/index.js:42:32)\n    at /app/node_modules/koa-router/lib/router.js:372:16","status":401}
+#> Error in httr2::req_perform(base_request(resolved_url, token), verbosity = private$verbosity(verbose)) : 
 #>   HTTP 401 Unauthorized.
 
 ## ------------------------------------------------
-## Method `Client$get_stations`
+## Method `Client$get_stations()`
 ## ------------------------------------------------
 
 try(client$get_stations())
-#> Simple feature collection with 27 features and 2 fields
+#> Simple feature collection with 25 features and 2 fields
 #> Geometry type: POINT
 #> Dimension:     XY
 #> Bounding box:  xmin: -128.1432 ymin: 50.116 xmax: -124.8554 ymax: 51.77083
 #> Geodetic CRS:  WGS 84
-#> # A tibble: 27 × 3
+#> # A tibble: 25 × 3
 #>    station_id                sensor_node             geometry
 #>    <chr>                     <chr>                <POINT [°]>
 #>  1 Buxton                    Buxton      (-128.0178 51.60491)
@@ -343,10 +390,10 @@ try(client$get_stations())
 #>  8 Lookout                   Lookout      (-128.1432 51.6475)
 #>  9 Orford Buoy               OrfordBuoy  (-124.9018 50.59661)
 #> 10 Orford Camp               OrfordCamp  (-124.8554 50.59206)
-#> # ℹ 17 more rows
+#> # ℹ 15 more rows
 
 ## ------------------------------------------------
-## Method `Client$remove_credentials`
+## Method `Client$remove_credentials()`
 ## ------------------------------------------------
 
 try(

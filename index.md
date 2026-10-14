@@ -19,6 +19,7 @@ authentication process.
 You can install hakaiApi from CRAN:
 
 ``` r
+
 install.packages("hakaiApi")
 ```
 
@@ -26,12 +27,14 @@ Or install the latest version from the Hakai Institute r-universe
 server:
 
 ``` r
+
 install.packages("hakaiApi", repos = "https://hakaiinstitute.r-universe.dev")
 ```
 
 ## Quickstart
 
 ``` r
+
 # Initialize the client
 client <- hakaiApi::Client$new("https://portal.hakai.org")
 
@@ -71,6 +74,7 @@ may be useful to use this library to access a locally running API
 instance or to access the Goose API for testing purposes.
 
 ``` r
+
 # Get a client for a locally running API instance
 client <- hakaiApi::Client$new("localhost:8666")
 print(client$api_root) # http://localhost:8666

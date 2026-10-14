@@ -4,6 +4,13 @@
 
 - ADd `get_stations()` method to retrieve list of stations as an sf
   object
+- The login page url is now derived from `api_root` so a custom server
+  (for example a development instance) authenticates against the
+  matching host instead of always pointing at production.
+- Request methods ([`get()`](https://rdrr.io/r/base/get.html), `post()`,
+  `put()`, `patch()`, `get_stations()`) gain a `verbose` argument that
+  prints the request and response details, including the resolved url,
+  to aid debugging.
 
 ## hakaiApi 1.0.5
 

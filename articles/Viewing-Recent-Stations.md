@@ -11,6 +11,7 @@ quickly visualize the locations of stations. We need to install the
 packages for visualization.
 
 ``` r
+
 library(hakaiApi)
 library(ggplot2)
 library(mapview)
@@ -27,6 +28,7 @@ to retrieve a data frame of stations. If you don’t have the sf package
 installed you will prompted to install that at this point.
 
 ``` r
+
 hakai_client <- hakaiApi::Client$new("https://portal.hakai.org/api")
 stations <- hakai_client$get_stations()
 ```
@@ -38,6 +40,7 @@ and then using the `st_intersection` function from the `sf` package to
 clip the BC polygon to that bounding box.
 
 ``` r
+
 bc <- bcmaps::bc_bound_hres()
 #> Creating directory to hold bcmaps data at /home/runner/.cache/R/bcmaps
 #> Reading the data using the read_sf function from the sf package.
@@ -53,6 +56,7 @@ using `ggplot2` or `mapview`. Here is an example of a static map using
 `ggplot2`:
 
 ``` r
+
 ggplot() +
   geom_sf(data = clipped_polygon) +
   geom_sf(data = stations, aes(color = station_id), size = 3) +
@@ -65,5 +69,6 @@ ggplot() +
 And here is an example of an interactive map using `mapview`:
 
 ``` r
+
 mapview::mapview(stations)
 ```

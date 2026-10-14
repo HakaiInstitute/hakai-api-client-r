@@ -1,6 +1,7 @@
 # Filtering Example
 
 ``` r
+
 library(hakaiApi)
 
 # Initialize the client
@@ -24,6 +25,7 @@ chlorophyll data from QU39, from after 2016, with only accepted values,
 and only glass fibre filters (GF/F) from the surface.
 
 ``` r
+
 # First return some chl data with no filters
 endpoint <- "/eims/views/output/chlorophyll"
 all_chl <- client$get(paste0(client$api_root, endpoint))
@@ -94,6 +96,7 @@ well using the sort descending capability and limiting the return to
 only 10 values.
 
 ``` r
+
 endpoint <- "/eims/views/output/chlorophyll"
 query <- paste(
   "fields=date,chla,site_id,line_out_depth",
