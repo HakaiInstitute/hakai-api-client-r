@@ -42,7 +42,7 @@ try(
 }
 
 ## ------------------------------------------------
-## Method `Client$new`
+## Method `Client$new()`
 ## ------------------------------------------------
 
 try(
@@ -59,20 +59,21 @@ try(
 )
 
 ## ------------------------------------------------
-## Method `Client$get`
+## Method `Client$get()`
 ## ------------------------------------------------
 
 try(client$get("/aco/views/projects"))
 try(client$get("https://portal.hakai.org/api/aco/views/projects"))
+try(client$get("/aco/views/projects", verbose = TRUE))
 
 ## ------------------------------------------------
-## Method `Client$get_stations`
+## Method `Client$get_stations()`
 ## ------------------------------------------------
 
 try(client$get_stations())
 
 ## ------------------------------------------------
-## Method `Client$remove_credentials`
+## Method `Client$remove_credentials()`
 ## ------------------------------------------------
 
 try(
@@ -80,65 +81,64 @@ try(
 )
 }
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{api_root}}{The api_root you are logged in to}
-}
-\if{html}{\out{</div>}}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{api_root}}{The api_root you are logged in to}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-Client-new}{\code{Client$new()}}
-\item \href{#method-Client-get}{\code{Client$get()}}
-\item \href{#method-Client-get_stations}{\code{Client$get_stations()}}
-\item \href{#method-Client-post}{\code{Client$post()}}
-\item \href{#method-Client-put}{\code{Client$put()}}
-\item \href{#method-Client-patch}{\code{Client$patch()}}
-\item \href{#method-Client-remove_credentials}{\code{Client$remove_credentials()}}
-\item \href{#method-Client-clone}{\code{Client$clone()}}
-}
+  \itemize{
+    \item \href{#method-Client-initialize}{\code{Client$new()}}
+    \item \href{#method-Client-get}{\code{Client$get()}}
+    \item \href{#method-Client-get_stations}{\code{Client$get_stations()}}
+    \item \href{#method-Client-post}{\code{Client$post()}}
+    \item \href{#method-Client-put}{\code{Client$put()}}
+    \item \href{#method-Client-patch}{\code{Client$patch()}}
+    \item \href{#method-Client-remove_credentials}{\code{Client$remove_credentials()}}
+    \item \href{#method-Client-clone}{\code{Client$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Client-new"></a>}}
-\if{latex}{\out{\hypertarget{method-Client-new}{}}}
-\subsection{Method \code{new()}}{
-Log into Google to gain credential access to the API
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Client$new(
+\if{html}{\out{<a id="method-Client-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-Client-initialize}{}}}
+\subsection{\code{Client$new()}}{
+  Log into Google to gain credential access to the API
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Client$new(
   api_root = "https://portal.hakai.org/api",
-  login_page = "https://portal.hakai.org/api-client-login",
+  login_page = NULL,
   credentials_file = NULL
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{api_root}}{Optional API base url to fetch data.
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{api_root}}{Optional API base url to fetch data.
 Defaults to "https://portal.hakai.org/api"}
-
-\item{\code{login_page}}{Optional API login page url to display to user.
-Defaults to "https://portal.hakai.org/api-client-login"}
-
-\item{\code{credentials_file}}{Optional path to the credentials cache file.
+      \item{\code{login_page}}{Optional API login page url to display to user.
+When NULL (the default) it is derived from the api_root host, so a custom
+api_root authenticates against the matching server.}
+      \item{\code{credentials_file}}{Optional path to the credentials cache file.
 Defaults to a file in the user's data directory as determined by tools::R_user_dir()}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Details}{
-Credentials can be provided in two ways:
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Details}{
+    Credentials can be provided in two ways:
 1. Via the HAKAI_API_TOKEN environment variable (contains query string: "token_type=Bearer&access_token=...")
 2. Via a credentials file (default: in user data directory via tools::R_user_dir())
 The environment variable takes precedence if both are available.
-}
-
-\subsection{Returns}{
-A client instance
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{try(
+  }
+  \subsection{Returns}{
+    A client instance
+  }
+  \subsection{Examples}{
+    \if{html}{\out{<div class="r example copy">}}
+    \preformatted{try(
    client <- Client$new()
 )
 # Using environment variable
@@ -151,164 +151,179 @@ try(
    client <- Client$new(credentials_file = "/path/to/creds")
 )
 }
-\if{html}{\out{</div>}}
-
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Client-get"></a>}}
 \if{latex}{\out{\hypertarget{method-Client-get}{}}}
-\subsection{Method \code{get()}}{
-Send a GET request to the API
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Client$get(endpoint_url, col_types = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{endpoint_url}}{The API endpoint url - can be a full URL or a relative path that will be appended to the api_root}
-
-\item{\code{col_types}}{a readr type specification}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A dataframe of the requested data
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{try(client$get("/aco/views/projects"))
+\subsection{\code{Client$get()}}{
+  Send a GET request to the API
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Client$get(endpoint_url, col_types = NULL, verbose = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{endpoint_url}}{The API endpoint url - can be a full URL or a relative path that will be appended to the api_root}
+      \item{\code{col_types}}{a readr type specification}
+      \item{\code{verbose}}{When TRUE, print the request and response details (including the resolved url) to aid debugging}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    A dataframe of the requested data
+  }
+  \subsection{Examples}{
+    \if{html}{\out{<div class="r example copy">}}
+    \preformatted{try(client$get("/aco/views/projects"))
 try(client$get("https://portal.hakai.org/api/aco/views/projects"))
+try(client$get("/aco/views/projects", verbose = TRUE))
 }
-\if{html}{\out{</div>}}
+    \if{html}{\out{</div>}}
+  }
+}
 
-}
-
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Client-get_stations"></a>}}
 \if{latex}{\out{\hypertarget{method-Client-get_stations}{}}}
-\subsection{Method \code{get_stations()}}{
-Get recent sensor nodes and their locations as an sf object
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Client$get_stations()}\if{html}{\out{</div>}}
+\subsection{\code{Client$get_stations()}}{
+  Get recent sensor nodes and their locations as an sf object
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Client$get_stations(verbose = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{verbose}}{When TRUE, print the request and response details (including the resolved url) to aid debugging}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    An sf object of sensor nodes and their locations
+  }
+  \subsection{Examples}{
+    \if{html}{\out{<div class="r example copy">}}
+    \preformatted{try(client$get_stations())
+}
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Returns}{
-An sf object of sensor nodes and their locations
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{try(client$get_stations())
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Client-post"></a>}}
 \if{latex}{\out{\hypertarget{method-Client-post}{}}}
-\subsection{Method \code{post()}}{
-Send a POST request to the API
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Client$post(endpoint_url, rec_data)}\if{html}{\out{</div>}}
+\subsection{\code{Client$post()}}{
+  Send a POST request to the API
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Client$post(endpoint_url, rec_data, verbose = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{endpoint_url}}{The API endpoint url - can be a full URL or a relative path that will be appended to the api_root}
+      \item{\code{rec_data}}{dataframe, list, or other R data structure to send as part of the post request payload}
+      \item{\code{verbose}}{When TRUE, print the request and response details (including the resolved url) to aid debugging}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    post request response status code and description
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{endpoint_url}}{The API endpoint url - can be a full URL or a relative path that will be appended to the api_root}
-
-\item{\code{rec_data}}{dataframe, list, or other R data structure to send as part of the post request payload}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-post request response status code and description
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Client-put"></a>}}
 \if{latex}{\out{\hypertarget{method-Client-put}{}}}
-\subsection{Method \code{put()}}{
-Send a PUT request to the API
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Client$put(endpoint_url, rec_data)}\if{html}{\out{</div>}}
+\subsection{\code{Client$put()}}{
+  Send a PUT request to the API
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Client$put(endpoint_url, rec_data, verbose = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{endpoint_url}}{The API endpoint url - can be a full URL or a relative path that will be appended to the api_root}
+      \item{\code{rec_data}}{dataframe, list, or other R data structure to send as part of the post request payload}
+      \item{\code{verbose}}{When TRUE, print the request and response details (including the resolved url) to aid debugging}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    PUT request response status code and description
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{endpoint_url}}{The API endpoint url - can be a full URL or a relative path that will be appended to the api_root}
-
-\item{\code{rec_data}}{dataframe, list, or other R data structure to send as part of the post request payload}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-PUT request response status code and description
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Client-patch"></a>}}
 \if{latex}{\out{\hypertarget{method-Client-patch}{}}}
-\subsection{Method \code{patch()}}{
-Send a PATCH request to the API
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Client$patch(endpoint_url, rec_data)}\if{html}{\out{</div>}}
+\subsection{\code{Client$patch()}}{
+  Send a PATCH request to the API
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Client$patch(endpoint_url, rec_data, verbose = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{endpoint_url}}{The API endpoint url - can be a full URL or a relative path that will be appended to the api_root}
+      \item{\code{rec_data}}{dataframe, list, or other R data structure to send as part of the post request payload}
+      \item{\code{verbose}}{When TRUE, print the request and response details (including the resolved url) to aid debugging}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    PATCH request response status code and description
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{endpoint_url}}{The API endpoint url - can be a full URL or a relative path that will be appended to the api_root}
-
-\item{\code{rec_data}}{dataframe, list, or other R data structure to send as part of the post request payload}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-PATCH request response status code and description
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Client-remove_credentials"></a>}}
 \if{latex}{\out{\hypertarget{method-Client-remove_credentials}{}}}
-\subsection{Method \code{remove_credentials()}}{
-Remove your cached login credentials to logout of the client
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Client$remove_credentials()}\if{html}{\out{</div>}}
-}
-
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{try(
+\subsection{\code{Client$remove_credentials()}}{
+  Remove your cached login credentials to logout of the client
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Client$remove_credentials()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Examples}{
+    \if{html}{\out{<div class="r example copy">}}
+    \preformatted{try(
    client$remove_credentials()
 )
 }
-\if{html}{\out{</div>}}
-
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Client-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-Client-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Client$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{Client$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Client$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

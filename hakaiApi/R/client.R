@@ -106,18 +106,20 @@ Client <- R6::R6Class(
     #' Send a GET request to the API
     #' @param endpoint_url The API endpoint url - can be a full URL or a relative path that will be appended to the api_root
     #' @param col_types a readr type specification
+    #' @param verbose When TRUE, print the request and response details (including the resolved url) to aid debugging
     #' @return A dataframe of the requested data
     #' @examples
     #' try(client$get("/aco/views/projects"))
     #' try(client$get("https://portal.hakai.org/api/aco/views/projects"))
-    get = function(endpoint_url, col_types = NULL) {
+    #' try(client$get("/aco/views/projects", verbose = TRUE))
+    get = function(endpoint_url, col_types = NULL, verbose = FALSE) {
       resolved_url <- private$resolve_url(endpoint_url)
       token <- paste(
         private$credentials$token_type,
         private$credentials$access_token
       )
       r <- base_request(resolved_url, token) |>
-        httr2::req_perform()
+        httr2::req_perform(verbosity = private$verbosity(verbose))
       data <- httr2::resp_body_json(r)
       data <- private$json2tbl(httr2::resp_body_json(r))
       data <- tibble::as_tibble(data)
@@ -126,10 +128,11 @@ Client <- R6::R6Class(
     },
     #' @description
     #' Get recent sensor nodes and their locations as an sf object
+    #' @param verbose When TRUE, print the request and response details (including the resolved url) to aid debugging
     #' @return An sf object of sensor nodes and their locations
     #' @examples
     #' try(client$get_stations())
-    get_stations = function() {
+    get_stations = function(verbose = FALSE) {
       if (!requireNamespace("sf", quietly = TRUE)) {
         stop(
           "Package 'sf' is required. Install with: install.packages('sf')",
@@ -143,7 +146,7 @@ Client <- R6::R6Class(
         private$credentials$access_token
       )
       r <- base_request(resolved_url, token) |>
-        httr2::req_perform()
+        httr2::req_perform(verbosity = private$verbosity(verbose))
       data <- httr2::resp_body_string(r)
       temp_file <- tempfile(fileext = ".geojson")
       writeLines(data, temp_file)
@@ -157,8 +160,9 @@ Client <- R6::R6Class(
     #' Send a POST request to the API
     #' @param endpoint_url The API endpoint url - can be a full URL or a relative path that will be appended to the api_root
     #' @param rec_data dataframe, list, or other R data structure to send as part of the post request payload
+    #' @param verbose When TRUE, print the request and response details (including the resolved url) to aid debugging
     #' @return post request response status code and description
-    post = function(endpoint_url, rec_data) {
+    post = function(endpoint_url, rec_data, verbose = FALSE) {
       resolved_url <- private$resolve_url(endpoint_url)
       token <- paste(
         private$credentials$token_type,
@@ -167,7 +171,7 @@ Client <- R6::R6Class(
       resp <- base_request(resolved_url, token) |>
         httr2::req_method("POST") |>
         httr2::req_body_json(rec_data) |>
-        httr2::req_perform()
+        httr2::req_perform(verbosity = private$verbosity(verbose))
       data <- paste0(
         httr2::resp_status(resp),
         ' ',
@@ -180,8 +184,9 @@ Client <- R6::R6Class(
     #' Send a PUT request to the API
     #' @param endpoint_url The API endpoint url - can be a full URL or a relative path that will be appended to the api_root
     #' @param rec_data dataframe, list, or other R data structure to send as part of the post request payload
+    #' @param verbose When TRUE, print the request and response details (including the resolved url) to aid debugging
     #' @return PUT request response status code and description
-    put = function(endpoint_url, rec_data) {
+    put = function(endpoint_url, rec_data, verbose = FALSE) {
       resolved_url <- private$resolve_url(endpoint_url)
       token <- paste(
         private$credentials$token_type,
@@ -190,7 +195,7 @@ Client <- R6::R6Class(
       resp <- base_request(resolved_url, token) |>
         httr2::req_body_json(data = rec_data, auto_unbox = TRUE) |>
         httr2::req_method("PUT") |>
-        httr2::req_perform()
+        httr2::req_perform(verbosity = private$verbosity(verbose))
       data <- paste0(
         httr2::resp_status(resp),
         ' ',
@@ -203,8 +208,9 @@ Client <- R6::R6Class(
     #' Send a PATCH request to the API
     #' @param endpoint_url The API endpoint url - can be a full URL or a relative path that will be appended to the api_root
     #' @param rec_data dataframe, list, or other R data structure to send as part of the post request payload
+    #' @param verbose When TRUE, print the request and response details (including the resolved url) to aid debugging
     #' @return PATCH request response status code and description
-    patch = function(endpoint_url, rec_data) {
+    patch = function(endpoint_url, rec_data, verbose = FALSE) {
       resolved_url <- private$resolve_url(endpoint_url)
       token <- paste(
         private$credentials$token_type,
@@ -213,7 +219,7 @@ Client <- R6::R6Class(
       resp <- base_request(resolved_url, token) |>
         httr2::req_body_json(data = rec_data, auto_unbox = TRUE) |>
         httr2::req_method("PATCH") |>
-        httr2::req_perform()
+        httr2::req_perform(verbosity = private$verbosity(verbose))
       data <- paste0(
         httr2::resp_status(resp),
         ' ',
@@ -243,6 +249,12 @@ Client <- R6::R6Class(
     },
     resolve_url = function(endpoint_url) {
       resolve_url(endpoint_url, self$api_root)
+    },
+    # Translate the user-facing verbose flag into the integer verbosity level
+    # understood by httr2::req_perform. Level 2 prints the request line and
+    # headers for both request and response, which exposes the resolved url.
+    verbosity = function(verbose) {
+      if (isTRUE(verbose)) 2L else 0L
     },
     querystring2df = function(querystring) {
       tryCatch(

@@ -22,6 +22,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Sam Albers \email{sam.albers@hakai.org}
   \item Taylor Denouden \email{taylor.denouden@hakai.org}
   \item Brett Johnson \email{brett.johnson@hakai.org}
 }
