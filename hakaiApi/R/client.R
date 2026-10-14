@@ -51,7 +51,8 @@ Client <- R6::R6Class(
     #' @param api_root Optional API base url to fetch data.
     #' Defaults to "https://portal.hakai.org/api"
     #' @param login_page Optional API login page url to display to user.
-    #' Defaults to "https://portal.hakai.org/api-client-login"
+    #' When NULL (the default) it is derived from the api_root host, so a custom
+    #' api_root authenticates against the matching server.
     #' @param credentials_file Optional path to the credentials cache file.
     #' Defaults to a file in the user's data directory as determined by tools::R_user_dir()
     #' @details
@@ -75,10 +76,13 @@ Client <- R6::R6Class(
     #' )
     initialize = function(
       api_root = "https://portal.hakai.org/api",
-      login_page = "https://portal.hakai.org/api-client-login",
+      login_page = NULL,
       credentials_file = NULL
     ) {
       self$api_root <- api_root
+      if (is.null(login_page)) {
+        login_page <- derive_login_page(api_root)
+      }
       private$login_page_url <- login_page
 
       # Set default credentials file location using R_user_dir

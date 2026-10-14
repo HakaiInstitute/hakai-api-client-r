@@ -48,6 +48,21 @@ test_that("base_request uses user agent from environment variable", {
 })
 
 
+test_that("derive_login_page keeps only scheme and host from api_root", {
+  expect_equal(
+    derive_login_page("https://portal.hakai.org/api"),
+    "https://portal.hakai.org/api-client-login"
+  )
+  expect_equal(
+    derive_login_page("https://portaldev.hakai.org"),
+    "https://portaldev.hakai.org/api-client-login"
+  )
+  expect_equal(
+    derive_login_page("http://localhost:8666/api"),
+    "http://localhost:8666/api-client-login"
+  )
+})
+
 test_that("json2tbl_impl handles list of simple character values correctly", {
   # Test data - list of single character values
   test_data <- list(
