@@ -6,6 +6,15 @@ base_request <- function(endpoint_url, token) {
     httr2::req_user_agent(user_agent)
 }
 
+# Derive the login page url from an api_root by keeping only the scheme and host
+# and appending the client login path. This ensures the authentication flow tracks
+# a custom api_root (for example a development server) rather than silently pointing
+# at production.
+derive_login_page <- function(api_root) {
+  host <- sub("^(https?://[^/]+).*$", "\\1", api_root)
+  paste0(host, "/api-client-login")
+}
+
 # Helper function to resolve URLs - extracted for testing
 resolve_url <- function(endpoint_url, api_root) {
   # Check if the URL is already absolute (contains http:// or https://)
